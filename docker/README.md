@@ -1,0 +1,3 @@
+### server 
+- ubuntu
+- centos

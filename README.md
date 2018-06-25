@@ -1,5 +1,2 @@
-### Local Laravel ansible
-- nginx
-- mysql
-- php >= 7.0
-- redis
+### 用docker composer 練習 ansible
+
