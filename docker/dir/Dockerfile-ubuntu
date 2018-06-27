@@ -1,4 +1,4 @@
-FROM nginx
+FROM ubunbu
 MAINTAINER JeriChen<jeri.chen0110@gmail.com>
 
 ENV TZ=Asia/Taipei
