@@ -1,4 +1,4 @@
-FROM ubunbu
+FROM centos:7
 MAINTAINER JeriChen<jeri.chen0110@gmail.com>
 
 ENV TZ=Asia/Taipei

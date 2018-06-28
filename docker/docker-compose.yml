@@ -2,25 +2,27 @@ version: '3'
 
 services:
 
-    # client:
-    #     build: 
-    #         context: ./dir
-    #         dockerfile: Dockerfile-ansible-ubuntu
-    #     ports:
-    #         - "2222:22"
+    ansible_ubuntu:
+        build: 
+            context: ./client
+        ports:
+            - "2222:22"
+        container_name: client
 
 ### ubuntu Server Container ##################################
 
     ubuntu:
-        image: rastasheep/ubuntu-sshd:14.04
+        build: 
+            context: ./server_01
         ports:
-          - "49154:22"
+          - "2221:22"
         container_name: server_01
 
 ### centos Server Container ##################################
-
-    #centos:
-      #image: centos:7
-      #ports:
-          #- "2222:22"
-      #container_name: server_01
+    
+    # centos:
+    #     build: 
+    #         context: ./server_02
+    #     ports:
+    #       - "2222:22"
+    #     container_name: server_02
