@@ -13,16 +13,16 @@ services:
 
     ubuntu:
         build: 
-            context: ./server_01
+            context: ./server01
         ports:
           - "2221:22"
-        container_name: server_01
+        container_name: server01
 
 ### centos Server Container ##################################
     
     # centos:
     #     build: 
-    #         context: ./server_02
+    #         context: ./server02
     #     ports:
     #       - "2222:22"
-    #     container_name: server_02
+    #     container_name: server02
