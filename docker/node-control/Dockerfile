@@ -5,7 +5,7 @@ ENV TZ=Asia/Taipei
 
 # install ansible
 RUN apt-get update
-RUN apt-get vim
+RUN apt-get install -y vim
 RUN apt-get install -y software-properties-common
 RUN apt-add-repository ppa:ansible/ansible
 RUN apt-get update
@@ -26,15 +26,38 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 
-# Setting ssh public key.
+# Setting ssh private && public key.
+RUN mkdir /root/.ssh
+
+RUN wget https://raw.githubusercontent.com/jerichen/docker-ansible/master/docker/files/ssh/id_rsa \
+      -O /tmp/id_rsa && \
+      mv /tmp/id_rsa /root/.ssh/ 
+
+RUN wget https://raw.githubusercontent.com/jerichen/docker-ansible/master/docker/files/ssh/id_rsa.pub \
+      -O /tmp/id_rsa.pub && \
+      mv /tmp/id_rsa.pub /root/.ssh/ 
+
 RUN wget https://raw.githubusercontent.com/jerichen/docker-ansible/master/docker/files/ssh/id_rsa.pub \
       -O /tmp/authorized_keys && \
-      mkdir /root/.ssh && \
-      mv /tmp/authorized_keys /root/.ssh/ && \
-      chown -R root:root /root/.ssh/ && \
+      mv /tmp/authorized_keys /root/.ssh/ 
+
+RUN chown -R root:root /root/.ssh/ && \
+      chmod 600 /root/.ssh/id_rsa && \
+      chmod 600 /root/.ssh/id_rsa.pub && \
       chmod 644 /root/.ssh/authorized_keys && \
       chmod 700 /root/.ssh
 
+# Setting ssh public key.
+# RUN wget https://raw.githubusercontent.com/jerichen/docker-ansible/master/docker/files/ssh/id_rsa.pub \
+#       -O /tmp/authorized_keys && \
+#       mkdir /root/.ssh && \
+#       mv /tmp/authorized_keys /root/.ssh/ && \
+
+#       chown -R root:root /root/.ssh/ && \
+#       chmod 644 /root/.ssh/authorized_keys && \
+#       chmod 700 /root/.ssh
+
+# open port 22
 EXPOSE 22
 
 # Run ssh server daemon.

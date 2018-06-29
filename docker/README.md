@@ -1,8 +1,8 @@
-### ansible client
+### Control Node 
 - ubuntu 18.04
     - install : ssh.ansible
 
-### server 
+### Managed Node
 - ubuntu 18.04
 - centos 7
 

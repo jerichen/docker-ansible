@@ -4,19 +4,19 @@ services:
 
     ansible_ubuntu:
         build: 
-            context: ./client
+            context: ./node-control
         ports:
             - "2222:22"
         container_name: client
 
 ### ubuntu Server Container ##################################
 
-    ubuntu:
-        build: 
-            context: ./server01
-        ports:
-          - "2221:22"
-        container_name: server01
+    # ubuntu:
+    #     build: 
+    #         context: ./server01
+    #     ports:
+    #       - "2221:22"
+    #     container_name: server01
 
 ### centos Server Container ##################################
     
