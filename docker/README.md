@@ -1,3 +1,4 @@
+## 未完成
 ### Control Node 
 - ubuntu 18.04
     - install : ssh.ansible
@@ -8,6 +9,7 @@
 
 ### ssh
 ssh root@127.0.0.1 -p 2222
+
 ssh-keygen -f ansible_rsa -C "ansible-jerichen"
 
 
