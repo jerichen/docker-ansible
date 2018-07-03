@@ -47,16 +47,6 @@ RUN chown -R root:root /root/.ssh/ && \
       chmod 644 /root/.ssh/authorized_keys && \
       chmod 700 /root/.ssh
 
-# Setting ssh public key.
-# RUN wget https://raw.githubusercontent.com/jerichen/docker-ansible/master/docker/files/ssh/id_rsa.pub \
-#       -O /tmp/authorized_keys && \
-#       mkdir /root/.ssh && \
-#       mv /tmp/authorized_keys /root/.ssh/ && \
-
-#       chown -R root:root /root/.ssh/ && \
-#       chmod 644 /root/.ssh/authorized_keys && \
-#       chmod 700 /root/.ssh
-
 # open port 22
 EXPOSE 22
 

@@ -2,27 +2,29 @@ version: '3'
 
 services:
 
-    ansible_ubuntu:
-        build: 
-            context: ./node-control
-        ports:
-            - "2222:22"
-        container_name: client
+### ubuntu Control Container ##################################
 
-### ubuntu Server Container ##################################
+    # control:
+    #     build: 
+    #         context: ./control-node-ubuntu
+    #     ports:
+    #         - "2222:22"
+    #     container_name: client
+
+### ubuntu Managed Container ##################################
 
     # ubuntu:
     #     build: 
-    #         context: ./server01
+    #         context: ./managed-node-centos
     #     ports:
     #       - "2221:22"
     #     container_name: server01
 
-### centos Server Container ##################################
+## centos Managed Container ##################################
     
-    # centos:
-    #     build: 
-    #         context: ./server02
-    #     ports:
-    #       - "2222:22"
-    #     container_name: server02
+    centos:
+        build: 
+            context: ./managed-node-centos
+        ports:
+          - "2222:22"
+        container_name: server02
