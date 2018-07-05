@@ -4,27 +4,31 @@ services:
 
 ### ubuntu Control Container ##################################
 
-    # control:
-    #     build: 
-    #         context: ./control-node-ubuntu
-    #     ports:
-    #         - "2222:22"
-    #     container_name: client
+    control:
+        image:
+            jerichen/control-node-ubuntu:latest
+        volumes:          
+            - ${CONTROL_NODE_UBUNTU_LOG_PATH}:/var/log
+        ports:
+            - "2221:22"
+        container_name: client
 
 ### ubuntu Managed Container ##################################
 
-    # ubuntu:
-    #     build: 
-    #         context: ./managed-node-centos
-    #     ports:
-    #       - "2221:22"
-    #     container_name: server01
+    ubuntu:
+        image: 
+            jerichen/managed-node-ubuntu:latest
+        volumes:          
+            - ${MANAGED_NODE_UBUNTU_LOG_PATH}:/var/log
+        ports:
+          - "2222:22"
+        container_name: server01
 
 ## centos Managed Container ##################################
     
-    centos:
-        build: 
-            context: ./managed-node-centos
-        ports:
-          - "2222:22"
-        container_name: server02
+    # centos:
+    #     image: 
+    #         jerichen/managed-node-centos:latest
+    #     ports:
+    #       - "2223:22"
+    #     container_name: server02
