@@ -47,6 +47,10 @@ RUN chown -R root:root /root/.ssh/ && \
       chmod 644 /root/.ssh/authorized_keys && \
       chmod 700 /root/.ssh
 
+# make dev & copy ansible folder
+RUN mkdir ~/dev
+RUN cp -rf /etc/ansible ~/dev/ansible
+
 # open port 22
 EXPOSE 22
 
