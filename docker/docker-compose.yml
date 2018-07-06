@@ -27,9 +27,9 @@ services:
 
 ## centos Managed Container ##################################
     
-    centos:
-        image: 
-            jerichen/managed-node-centos:latest
-        ports:
-          - "3333:22"
-        container_name: server02
+    # centos:
+    #     image: 
+    #         jerichen/managed-node-centos:latest
+    #     ports:
+    #       - "3333:22"
+    #     container_name: server02
