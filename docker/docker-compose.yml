@@ -9,7 +9,7 @@ services:
             jerichen/control-node-ubuntu:latest
         volumes:          
             - ${CONTROL_NODE_UBUNTU_LOG_PATH}:/var/log
-            - ${CONTROL_ANSIBLE_PATH}:/root/dev/ansible
+            - ${CONTROL_DEV_PATH}:/root/dev
         ports:
             - "${CONTROL_NODE_UBUNTU_SSH_PORT}:22"
         container_name: client
@@ -27,9 +27,9 @@ services:
 
 ## centos Managed Container ##################################
     
-    # centos:
-    #     image: 
-    #         jerichen/managed-node-centos:latest
-    #     ports:
-    #       - "3333:22"
-    #     container_name: server02
+    centos:
+        image: 
+            jerichen/managed-node-centos:latest
+        ports:
+          - "3333:22"
+        container_name: server02
