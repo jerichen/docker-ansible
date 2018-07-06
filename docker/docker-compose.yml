@@ -10,7 +10,7 @@ services:
         volumes:          
             - ${CONTROL_NODE_UBUNTU_LOG_PATH}:/var/log
         ports:
-            - "2221:22"
+            - "${CONTROL_NODE_UBUNTU_SSH_PORT}:22"
         container_name: client
 
 ### ubuntu Managed Container ##################################
@@ -21,7 +21,7 @@ services:
         volumes:          
             - ${MANAGED_NODE_UBUNTU_LOG_PATH}:/var/log
         ports:
-          - "2222:22"
+          - "${MANAGED_NODE_UBUNTU_SSH_PORT}:22"
         container_name: server01
 
 ## centos Managed Container ##################################
@@ -30,5 +30,5 @@ services:
     #     image: 
     #         jerichen/managed-node-centos:latest
     #     ports:
-    #       - "2223:22"
+    #       - "3333:22"
     #     container_name: server02
