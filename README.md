@@ -25,3 +25,8 @@ ssh-keygen -f ansible_rsa -C "ansible-jerichen"
 - stop all container : docker stop $(docker ps -a -q)
 - remove all container : docker rm $(docker ps -a -q)
 - remove all image : docker rmi $(docker images -q)
+
+### ansible info
+- macOS取得本機ip指令 : ifconfig en0
+- lab : [dev] 需設定本機端ip
+- 測試連線成功指令 : ansible dev -m ping

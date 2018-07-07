@@ -1,0 +1,6 @@
+- hosts: dev
+  become: True
+  become_user: master
+  become_method: sudo
+  roles:
+    - role: example
