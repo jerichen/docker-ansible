@@ -1,9 +1,0 @@
-- name: install composer
-  apt:
-    name: composer
-  when: ansible_distribution == 'Ubuntu'
-  
-- name: install composer
-  yum:
-    name: composer
-  when: ansible_distribution == 'CentOS'

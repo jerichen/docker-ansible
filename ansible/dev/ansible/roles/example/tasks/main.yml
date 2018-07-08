@@ -7,3 +7,9 @@
 - name: print debug message
   debug:
     msg: "{{ message }}"
+
+# task 3
+- name: debug
+  debug:
+    msg: 
+      - "{{ foo }}"

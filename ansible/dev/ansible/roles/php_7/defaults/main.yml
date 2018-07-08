@@ -1,0 +1,27 @@
+php_packages:
+  - json
+  - fpm
+  - common
+  - opcache
+  - cli
+  - bcmath
+  - gd
+  - ldap
+  - mbstring
+  - mcrypt
+  - mssql
+  - mysqlnd
+  - pdo
+  - pear
+  - pecl-igbinary
+  - pecl-imagick
+  - pecl-memcached
+  - pecl-redis
+  - pecl-zip
+  - process
+  - soap
+  - xml
+  - xmlrpc
+  - devel
+  - pdo-dblib
+  - gmp

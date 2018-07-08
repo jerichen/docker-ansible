@@ -1,11 +1,12 @@
-- name: install git
+- name: install web server
   apt:
-    name: git
+    name: nginx
+    state: latest
   when: ansible_distribution == 'Ubuntu'
   
-- name: install git
+- name: install web server
   yum:
-    name: git-all
+    name: nginx
   when: 
     ansible_distribution == 'CentOS' and 
     ansible_distribution_major_version == '7'
