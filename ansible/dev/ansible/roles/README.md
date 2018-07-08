@@ -1,15 +1,15 @@
 ### ansible 測試連線 inventory lab
 ansible dev -m ping
 
-### roles folder info
+### roles folder info
 - defaults : 可被覆寫的變數
     - 一定要有main.yml
 - files : 需複製到 Managed node 的檔案
 - handlers
     - 一定要有main.yml
-- meta : 特殊設定及其他依賴關係
+- meta : 特殊設定及其他依賴關係
     - 一定要有main.yml
-- tasks : 主要的任務執行
+- tasks : 主要的任務執行
     - 一定要有main.yml
 - templates : 集中存放 Jinja2 模板的目錄
 - tests

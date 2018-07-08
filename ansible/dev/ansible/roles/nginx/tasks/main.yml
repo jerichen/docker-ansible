@@ -7,6 +7,7 @@
 - name: install web server
   yum:
     name: nginx
+    state: latest
   when: 
     ansible_distribution == 'CentOS' and 
     ansible_distribution_major_version == '7'
