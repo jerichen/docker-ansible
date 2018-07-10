@@ -20,6 +20,27 @@ folder_directory:
     mode:  "0755"
     state: "directory"
 
+# nginx_vhost
+nginx_vhost:
+  - src: "~/dev/ansible/roles/nginx/files/php71.conf"
+    dest: "/etc/nginx/sites-enabled/php71.conf"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    backup: "yes"
+  - src: "~/dev/ansible/roles/nginx/files/php56.conf"
+    dest: "/etc/nginx/sites-enabled/php56.conf"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    backup: "yes"
+  - src: "~/dev/ansible/roles/nginx/files/index.php"
+    dest: "/var/www/html/index.php"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    backup: "yes"
+
 # Certificate subject
 nginx_ssl_certificate_subject: "/C=US/ST=NY/L=NYC/O=Dis/CN=NGINX"
 

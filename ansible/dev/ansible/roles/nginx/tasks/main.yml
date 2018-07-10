@@ -21,7 +21,7 @@
   when:
     delete_conf is defined
 
-- name: copy nginx vhost and backup the original
+- name: copy_conf
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -51,3 +51,16 @@
     openssl req -nodes -new -x509 -keyout {{ nginx_ssl_certificate_key }} -out {{ nginx_ssl_certificate }} -subj "{{ nginx_ssl_certificate_subject }}" -days {{ nginx_ssl_certificate_days }}
   args:
     creates: "{{ nginx_ssl_certificate }}"
+
+- name: copy nginx vhost and phpinfo
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+    backup: "{{ item.backup }}"
+  with_items:
+    - "{{ nginx_vhost }}"
+  when:
+    nginx_vhost is defined
