@@ -11,3 +11,23 @@ copy_conf:
     group: "root"
     mode: "0755"
     backup: "yes"
+
+# create folder_directory
+folder_directory:
+  - path: "/etc/nginx/ssl"
+    owner: "root"
+    group: "root"
+    mode:  "0755"
+    state: "directory"
+
+# Certificate subject
+nginx_ssl_certificate_subject: "/C=US/ST=NY/L=NYC/O=Dis/CN=NGINX"
+
+# Certificate validity (days)
+nginx_ssl_certificate_days: 365
+
+# Server path to SSL certificate
+nginx_ssl_certificate: /etc/nginx/ssl/nginx.crt
+
+# Server path to SSL certificate key
+nginx_ssl_certificate_key: /etc/nginx/ssl/nginx.key

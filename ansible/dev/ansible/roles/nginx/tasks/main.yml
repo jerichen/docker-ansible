@@ -33,3 +33,21 @@
     - "{{ copy_conf }}"
   when:
     copy_conf is defined
+
+- name: create folder_directory
+  file:
+    path:  "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode:  "{{ item.mode }}"
+    state:  "{{ item.state }}"
+  with_items:
+    "{{ folder_directory }}"
+  when:
+    folder_directory is defined
+
+- name: generate SSL_certificate
+  command:
+    openssl req -nodes -new -x509 -keyout {{ nginx_ssl_certificate_key }} -out {{ nginx_ssl_certificate }} -subj "{{ nginx_ssl_certificate_subject }}" -days {{ nginx_ssl_certificate_days }}
+  args:
+    creates: "{{ nginx_ssl_certificate }}"
