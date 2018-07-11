@@ -27,9 +27,11 @@ services:
 
 ## centos Managed Container ##################################
     
-    # centos:
-    #     image: 
-    #         jerichen/managed-node-centos:latest
-    #     ports:
-    #       - "3333:22"
-    #     container_name: server02
+    centos:
+        image:
+            jerichen/managed-node-centos:latest
+        volumes:
+            - ${MANAGED_NODE_CENTOS_LOG_PATH}:/var/log
+        ports:
+            - "${MANAGED_NODE_CENTOS_SSH_PORT}:22"
+        container_name: server02

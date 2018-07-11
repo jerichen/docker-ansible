@@ -19,6 +19,16 @@ folder_directory:
     group: "root"
     mode:  "0755"
     state: "directory"
+  - path: "/etc/nginx/sites-enabled"
+    owner: "root"
+    group: "root"
+    mode:  "0755"
+    state: "directory"
+  - path: "/var/www/html"
+    owner: "root"
+    group: "root"
+    mode:  "0755"
+    state: "directory"
 
 # nginx_vhost
 nginx_vhost:

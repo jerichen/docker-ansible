@@ -1,15 +1,23 @@
-- name: install web server
+- name: Ubuntu install web server
   apt:
     name: nginx
     state: latest
   when: ansible_distribution == 'Ubuntu'
-  
-- name: install web server
+
+- name: Add CentOS 7 EPEL repository,
+  yum:
+    name: epel-release
+    state: latest
+  when:
+    ansible_distribution == 'CentOS' and
+    ansible_distribution_major_version == '7'
+
+- name: CentOS install web server
   yum:
     name: nginx
     state: latest
   when:
-    ansible_distribution == 'CentOS' and 
+    ansible_distribution == 'CentOS' and
     ansible_distribution_major_version == '7'
 
 - name: delete conf
