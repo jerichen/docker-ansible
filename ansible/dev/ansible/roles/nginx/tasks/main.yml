@@ -3,6 +3,8 @@
     name: nginx
     state: latest
   when: ansible_distribution == 'Ubuntu'
+  notify:
+      - Test nginx and restart
 
 - name: Add CentOS 7 EPEL repository,
   yum:

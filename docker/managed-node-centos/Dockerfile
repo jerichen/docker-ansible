@@ -50,7 +50,7 @@ RUN wget https://raw.githubusercontent.com/jerichen/docker-ansible/master/docker
       chmod 644 /home/master/.ssh/authorized_keys && \
       chmod 700 /home/master/.ssh
 
-EXPOSE 22 80 443
+EXPOSE 22
 
 # Run ssh server daemon.
 CMD ["/usr/sbin/sshd", "-D"]
