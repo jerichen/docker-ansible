@@ -7,10 +7,10 @@
   when: 
     ansible_distribution == 'Ubuntu'
   
-- name: install php
+- name: install php7.1
   yum:
     name=php{{ php.version }}-{{ item }} 
-    state=present
+    state=latest
   with_items:
     "{{ php_packages }}"
   when: 
