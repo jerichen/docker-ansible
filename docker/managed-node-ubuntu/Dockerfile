@@ -10,6 +10,7 @@ RUN apt-get update
 RUN apt-get install -y vim
 RUN apt-get install -y net-tools
 RUN apt-get install -y openssh-server
+RUN apt-get install -y openssh-clients
 RUN apt-get install -y python
 RUN apt-get install -y sudo
 RUN apt-get install -y curl

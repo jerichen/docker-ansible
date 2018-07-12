@@ -5,15 +5,7 @@
   when:
     ansible_distribution == 'Ubuntu'
   notify:
-    - restart nginx
-
-- name: Add CentOS 7 EPEL repository,
-  yum:
-    name: epel-release
-    state: latest
-  when:
-    ansible_distribution == 'CentOS' and
-    ansible_distribution_major_version == '7'
+    - ubuntu restart nginx
 
 - name: CentOS install web server
   yum:
@@ -21,9 +13,9 @@
     state: latest
   when:
     ansible_distribution == 'CentOS' and
-    ansible_distribution_major_version == '7'
-  notify:
-    - restart nginx
+    ansible_distribution_major_version == '6'
+#  notify:
+#    - restart nginx
 
 - name: delete conf
   file:

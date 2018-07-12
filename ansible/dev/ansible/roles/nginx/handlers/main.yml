@@ -1,16 +1,23 @@
-- name: restart nginx
+- name: ubuntu restart nginx
   service:
     name: nginx
     state: restarted
     enabled: yes
 
-- name: reload nginx
+- name: ubuntu reload nginx
   service:
     name: nginx
     state: reloaded
     enabled: yes
 
-- name: test nginx and restart
+- name: ubuntu test nginx and restart
   command: nginx -t
   notify:
-    - restart nginx
+    - ubuntu restart nginx
+
+- name: centos restart nginx
+#  systemctl:
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes

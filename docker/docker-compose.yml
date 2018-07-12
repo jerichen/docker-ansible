@@ -5,37 +5,40 @@ services:
 ### ubuntu Control Container ##################################
 
     control:
-        image:
-            jerichen/control-node-ubuntu:latest
-        volumes:          
-            - ${CONTROL_NODE_UBUNTU_LOG_PATH}:/var/log
-            - ${CONTROL_DEV_PATH}:/root/dev
-        ports:
-            - "${CONTROL_NODE_UBUNTU_SSH_PORT}:22"
-        container_name: client
+      image:
+          jerichen/control-node-ubuntu:latest
+      volumes:
+          - ${CONTROL_NODE_UBUNTU_LOG_PATH}:/var/log
+          - ${CONTROL_DEV_PATH}:/root/dev
+      ports:
+          - "${CONTROL_NODE_UBUNTU_SSH_PORT}:22"
+      container_name: client
 
 ### ubuntu Managed Container ##################################
 
     ubuntu:
-        image: 
-            jerichen/managed-node-ubuntu:latest
-        volumes:          
-            - ${MANAGED_NODE_UBUNTU_LOG_PATH}:/var/log
-        ports:
-          - "${MANAGED_NODE_UBUNTU_SSH_PORT}:22"
-          - "${MANAGED_NODE_UBUNTU_HTTP_PORT}:80"
-          - "${MANAGED_NODE_UBUNTU_HTTPS_PORT}:443"
-        container_name: web01
+      image:
+          jerichen/managed-node-ubuntu:latest
+      volumes:
+          - ${MANAGED_NODE_UBUNTU_LOG_PATH}:/var/log
+      ports:
+        - "${MANAGED_NODE_UBUNTU_SSH_PORT}:22"
+        - "${MANAGED_NODE_UBUNTU_HTTP_PORT}:80"
+        - "${MANAGED_NODE_UBUNTU_HTTPS_PORT}:443"
+      container_name: web01
 
 ## centos Managed Container ##################################
     
     centos:
-        image:
-            jerichen/managed-node-centos:latest
-        volumes:
-            - ${MANAGED_NODE_CENTOS_LOG_PATH}:/var/log
-        ports:
-            - "${MANAGED_NODE_CENTOS_SSH_PORT}:22"
-            - "${MANAGED_NODE_CENTOS_HTTP_PORT}:80"
-            - "${MANAGED_NODE_CENTOS_HTTPS_PORT}:443"
-        container_name: web02
+      build:
+        context: ./managed-node-centos
+#        image:
+#            jerichen/managed-node-centos:latest
+      volumes:
+          - ${MANAGED_NODE_CENTOS_LOG_PATH}:/var/log
+      ports:
+          - "${MANAGED_NODE_CENTOS_SSH_PORT}:22"
+          - "${MANAGED_NODE_CENTOS_HTTP_PORT}:80"
+          - "${MANAGED_NODE_CENTOS_HTTPS_PORT}:443"
+      container_name: web02
+      privileged: true
