@@ -29,13 +29,13 @@ services:
 
 ## centos Managed Container ##################################
     
-#    centos:
-#        image:
-#            jerichen/managed-node-centos:latest
-#        volumes:
-#            - ${MANAGED_NODE_CENTOS_LOG_PATH}:/var/log
-#        ports:
-#            - "${MANAGED_NODE_CENTOS_SSH_PORT}:22"
-#            - "${MANAGED_NODE_CENTOS_HTTP_PORT}:80"
-#            - "${MANAGED_NODE_CENTOS_HTTPS_PORT}:443"
-#        container_name: server02
+    centos:
+        image:
+            jerichen/managed-node-centos:latest
+        volumes:
+            - ${MANAGED_NODE_CENTOS_LOG_PATH}:/var/log
+        ports:
+            - "${MANAGED_NODE_CENTOS_SSH_PORT}:22"
+            - "${MANAGED_NODE_CENTOS_HTTP_PORT}:80"
+            - "${MANAGED_NODE_CENTOS_HTTPS_PORT}:443"
+        container_name: server02
