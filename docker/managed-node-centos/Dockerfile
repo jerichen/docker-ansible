@@ -15,6 +15,7 @@ RUN yum install -y python
 RUN yum install -y sudo
 RUN yum install -y curl
 RUN yum install -y wget
+RUN yum install -y epel-release
 RUN yum install -y bash-completion
 RUN yum install -y openssl
 RUN yum clean all
