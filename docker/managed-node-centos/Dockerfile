@@ -10,6 +10,7 @@ RUN yum update -y
 RUN yum install -y vim
 RUN yum install -y net-tools
 RUN yum install -y openssh-server
+RUN yum install -y openssh-clients
 RUN yum install -y python
 RUN yum install -y sudo
 RUN yum install -y curl
