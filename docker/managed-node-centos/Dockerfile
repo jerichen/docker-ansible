@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos:6
 MAINTAINER JeriChen<jeri.chen0110@gmail.com>
 
 ENV TZ=Asia/Taipei
