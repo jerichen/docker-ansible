@@ -2,6 +2,7 @@
 delete_conf:
   - path: "/etc/nginx/conf.d/default.conf"
   - path: "/etc/nginx/nginx.conf"
+  - path: "/etc/nginx/sites-available/default"
 
 # copy_conf
 copy_conf:
@@ -32,6 +33,12 @@ folder_directory:
 
 # nginx_vhost
 nginx_vhost:
+  - src: "~/dev/ansible/roles/nginx/files/default.conf"
+    dest: "/etc/nginx/sites-available/default.conf"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    backup: "yes"
   - src: "~/dev/ansible/roles/nginx/files/php71.conf"
     dest: "/etc/nginx/sites-enabled/php71.conf"
     owner: "root"
