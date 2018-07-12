@@ -1,4 +1,4 @@
-FROM centos:6
+FROM centos:7
 MAINTAINER JeriChen<jeri.chen0110@gmail.com>
 
 ENV TZ=Asia/Taipei
@@ -53,6 +53,9 @@ RUN wget https://raw.githubusercontent.com/jerichen/docker-ansible/master/docker
       chmod 700 /home/master/.ssh
 
 EXPOSE 22
+
+ENTRYPOINT ["/usr/sbin/init"]
+CMD ["systemctl"]
 
 # Run ssh server daemon.
 CMD ["/usr/sbin/sshd", "-D"]
