@@ -4,4 +4,4 @@
   become_user: root
   become_method: sudo
   roles:
-    - role: php_7
+    - role: php7
