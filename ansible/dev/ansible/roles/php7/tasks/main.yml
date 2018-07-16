@@ -2,35 +2,10 @@
   set_fact:
     roles_name: "{{ role_path|basename }}"
 
-- name: Install requires package for apt module
-  apt:
-    name: python-apt
-    state: latest
+- name: APT system for installation
+  include_tasks: use-apt.yml
+  when: ansible_pkg_mgr == 'apt'
 
-- name: Add third-party repository on Ubuntu
-  apt_repository:
-    repo: "{{ ubuntu_php7_ppa_repo }}"
-  when:
-      ansible_distribution == 'Ubuntu'
-
-- name: Update and upgrade apt packages
-  apt:
-    force_apt_get: yes
-    upgrade: yes
-    update_cache: yes
-    cache_valid_time: 86400
-
-## TODO
-- name: install php7
-  apt:
-    name: php7
-    state: latest
-  when: ansible_distribution == 'Ubuntu'
-
-#- name: APT system for installation
-#  include_tasks: use-apt.yml
-#  when: ansible_pkg_mgr == 'apt'
-#
 #- name: YUM system for installation
 #  include_tasks: use-yum.yml
 #  when: ansible_pkg_mgr == 'yum'
