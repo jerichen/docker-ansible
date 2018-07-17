@@ -1,4 +1,4 @@
-- name: restarted php{{ apt_php_version }}-fpm
+- name: restarted php{{ apt_php_versi-fpm
   service:
     name: php{{ apt_php_version }}-fpm
     state: restarted
