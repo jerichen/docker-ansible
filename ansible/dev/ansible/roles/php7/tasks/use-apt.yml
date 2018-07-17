@@ -8,11 +8,11 @@
     name: software-properties-common
     state: latest
 
-- name: Add PHP7 ppa repository
+- name: Add repository for Ubuntu
   apt_repository:
     repo: "{{ ubuntu_php7_ppa_repo }}"
   when:
-    - ansible_distribution|lower == "ubuntu"
+    ansible_distribution|lower == "ubuntu"
 
 - name: Update and upgrade apt packages
   apt:
