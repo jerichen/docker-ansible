@@ -3,9 +3,17 @@
     name: '{{ mariadb_service }}'
     state: restarted
     enabled: yes
+    sleep: 5
 
 - name: reloaded mariadb
   service:
     name: '{{ mariadb_service }}'
     state: reloaded
     enabled: yes
+
+- name: started mariadb
+  service:
+    name: '{{ mariadb_service }}'
+    state: started
+    enabled: yes
+    sleep: 5

@@ -1,20 +1,79 @@
-ubuntu_mariadb_repo: "deb http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.0/ubuntu trusty main"
-
-mariadb_repo_key: "keyserver.ubuntu.com"
-
-mariadb_repo_id: "0xcbcb082a1bb943db"
-
-mariadb_version: "10.3"
-
-mariadb_service: "mariadb"
-
-mariadb_packages:
-  - mariadb
-  - mariadb-server
+#ubuntu_mariadb_repo: "deb http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.0/ubuntu trusty main"
+#mariadb_repo_key: "keyserver.ubuntu.com"
+#mariadb_repo_id: "0xcbcb082a1bb943db"
+#mariadb_version: "10.3"
+#mariadb_service: "mariadb"
+#mariadb_packages:
+#  - mariadb
+#  - mariadb-server
 #  - mysql-python
 
-MYSQL_PORT: "3306"
-MYSQL_ROOT_PASSWORD: "password"
-MYSQL_DATABASE: "homestead"
-MYSQL_USER: "homestead"
-MYSQL_PASSWORD: "secret"
+#MYSQL_PORT: "3306"
+#MYSQL_ROOT_PASSWORD: "password"
+#MYSQL_DATABASE: "homestead"
+#MYSQL_USER: "homestead"
+#MYSQL_PASSWORD: "secret"
+
+--
+mariadb_version: '10.3'
+mariadb_service: 'mariadb'
+mariadb_apt_mirror: 'http://ftp.hosteurope.de'
+mariadb_apt_repositories:
+  - 'deb [arch=amd64,i386,ppc64el] {{ mariadb_apt_mirror }}/mirror/mariadb.org/repo/{{ mariadb_version }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main'
+  - 'deb-src {{ mariadb_apt_mirror }}/mirror/mariadb.org/repo/{{ mariadb_version }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main'
+
+mariadb_apt_keyserver: 'keyserver.ubuntu.com'
+mariadb_apt_keyid: '0xF1656F24C74CD1D8'
+
+mariadb_default_hosts:
+  - localhost
+  - 127.0.0.1
+  - ::1
+
+mariadb_admin_home: '/root'
+mariadb_admin_user: 'admin'
+
+# This password is not secure! Please define your own password!
+mariadb_admin_password:  "{{ ansible_machine_id | hash('sha1') | truncate(24, True, '') }}"
+
+# Hosts
+mariadb_admin_hosts:
+  - 127.0.0.1
+  - ::1
+  - localhost
+
+mariadb_allowed_hosts:
+  - 127.0.0.1
+  - ::1
+  - localhost
+
+mariadb_enabled_on_startup: yes
+
+# Databases.
+mariadb_default_databases: []
+mariadb_host_databases: []
+mariadb_group_databases: []
+#   - name: example
+#     collation: utf8_general_ci
+#     encoding: utf8
+#     replicate: 1
+
+# Users.
+mariadb_default_users: []
+mariadb_host_users: []
+mariadb_group_users: []
+#   - name: example
+#     host: 127.0.0.1
+#     password: secret
+#     priv: *.*:USAGE
+
+# MySQL connection settings.
+mariadb_port: "3306"
+mariadb_bind_address: '0.0.0.0'
+mariadb_datadir: /var/lib/mysql
+mariadb_pid_file: /var/run/mysqld/mysqld.pid
+
+# Logging settings.
+mariadb_log: ""
+mariadb_log_error: /var/log/mysql.err
+mariadb_syslog_tag: mysql
