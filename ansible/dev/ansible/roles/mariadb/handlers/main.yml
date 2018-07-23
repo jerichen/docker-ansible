@@ -1,19 +1,19 @@
 - name: restarted mariadb
   service:
-    name: '{{ mariadb_service }}'
+    name: mysql
     state: restarted
     enabled: yes
     sleep: 5
 
 - name: reloaded mariadb
   service:
-    name: '{{ mariadb_service }}'
+    name: mysql
     state: reloaded
     enabled: yes
 
 - name: started mariadb
   service:
-    name: '{{ mariadb_service }}'
+    name: mysql
     state: started
     enabled: yes
     sleep: 5

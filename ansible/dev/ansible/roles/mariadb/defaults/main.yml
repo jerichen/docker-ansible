@@ -1,12 +1,24 @@
-#ubuntu_mariadb_repo: "deb http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.0/ubuntu trusty main"
-#mariadb_repo_key: "keyserver.ubuntu.com"
-#mariadb_repo_id: "0xcbcb082a1bb943db"
-#mariadb_version: "10.3"
-#mariadb_service: "mariadb"
-#mariadb_packages:
-#  - mariadb
-#  - mariadb-server
-#  - mysql-python
+mariadb_version: "10.3"
+mariadb_service: "mariadb"
+ubuntu_mariadb_repo: "deb [arch=amd64,arm64,ppc64el] http://ftp.ubuntu-tw.org/mirror/mariadb/repo/10.3/ubuntu bionic main"
+mariadb_repo_key: "keyserver.ubuntu.com"
+mariadb_repo_id: "0xF1656F24C74CD1D8"
+
+mariadb_packages:
+  - mariadb-server
+  - mariadb-client
+
+mariadb_apt_dependencies:
+  - software-properties-common
+  - build-essential
+  - libmysqlclient-dev
+  - python-mysqldb
+  - python-pip
+  - python-dev
+
+mariadb_pip_dependencies:
+  - MySQL-python
+
 
 #MYSQL_PORT: "3306"
 #MYSQL_ROOT_PASSWORD: "password"
@@ -14,16 +26,6 @@
 #MYSQL_USER: "homestead"
 #MYSQL_PASSWORD: "secret"
 
---
-mariadb_version: '10.3'
-mariadb_service: 'mariadb'
-mariadb_apt_mirror: 'http://ftp.hosteurope.de'
-mariadb_apt_repositories:
-  - 'deb [arch=amd64,i386,ppc64el] {{ mariadb_apt_mirror }}/mirror/mariadb.org/repo/{{ mariadb_version }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main'
-  - 'deb-src {{ mariadb_apt_mirror }}/mirror/mariadb.org/repo/{{ mariadb_version }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main'
-
-mariadb_apt_keyserver: 'keyserver.ubuntu.com'
-mariadb_apt_keyid: '0xF1656F24C74CD1D8'
 
 mariadb_default_hosts:
   - localhost
