@@ -25,6 +25,8 @@ services:
         - "${MANAGED_NODE_UBUNTU_SSH_PORT}:22"
         - "${MANAGED_NODE_UBUNTU_HTTP_PORT}:80"
         - "${MANAGED_NODE_UBUNTU_HTTPS_PORT}:443"
+        - "${MANAGED_NODE_UBUNTU_MYSQL_PORT}:3306"
+        - "${MANAGED_NODE_UBUNTU_REDIS_PORT}:6379"
       container_name: web01
 
 ## centos Managed Container ##################################
@@ -40,5 +42,7 @@ services:
         - "${MANAGED_NODE_CENTOS_SSH_PORT}:22"
         - "${MANAGED_NODE_CENTOS_HTTP_PORT}:80"
         - "${MANAGED_NODE_CENTOS_HTTPS_PORT}:443"
+        - "${MANAGED_NODE_CENTOS_MYSQL_PORT}:3306"
+        - "${MANAGED_NODE_CENTOS_REDIS_PORT}:6379"
       container_name: web02
       privileged: true
