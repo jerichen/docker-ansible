@@ -1,0 +1,13 @@
+composer_path: "/usr/local/bin/composer"
+composer_installer_dest: "/tmp/composer-setup.php"
+composer_installer_url: "https://getcomposer.org/installer"
+composer_install_dir: "/usr/bin"
+
+composer_keep_updated: no
+composer_add_to_path: yes
+composer_version:
+composer_home_path: '~/.composer'
+composer_home_owner: 'root'
+composer_home_group: 'root'
+composer_global_packages:
+composer_github_oauth_token:
