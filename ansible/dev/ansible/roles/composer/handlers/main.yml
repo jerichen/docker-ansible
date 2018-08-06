@@ -1,0 +1,19 @@
+- name: restarted redis
+  service:
+    name: redis-server
+    state: restarted
+    enabled: yes
+    sleep: 5
+
+- name: reloaded redis
+  service:
+    name: redis-server
+    state: reloaded
+    enabled: yes
+
+- name: started redis
+  service:
+    name: redis-server
+    state: started
+    enabled: yes
+    sleep: 5
