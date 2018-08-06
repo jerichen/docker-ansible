@@ -3,6 +3,7 @@ composer_installer_dest: "/tmp/composer-setup.php"
 composer_installer_url: "https://getcomposer.org/installer"
 composer_install_dir: "/usr/bin"
 
+######################################################################
 composer_keep_updated: no
 composer_add_to_path: yes
 composer_version:
