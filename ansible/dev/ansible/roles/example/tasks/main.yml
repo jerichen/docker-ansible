@@ -13,3 +13,11 @@
   debug:
     msg: 
       - "{{ foo }}"
+
+- name: composer create-project laravel
+  composer:
+    command: create-project
+    arguments: '--prefer-dist laravel/laravel {{ web_site }}'
+    working_dir: /var/www/html
+    prefer_dist: yes
+

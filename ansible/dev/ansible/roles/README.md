@@ -28,3 +28,7 @@ touch ~/dev/ansible/roles/example/{defaults,vars,tasks,meta,handlers}/main.yml
 
 ### run ansible
 ansible-playbook ~/dev/ansible/playbook/example/playbook.yml
+
+### run ansible add var 
+ansible-playbook --extra-vars "hosts_name=dev" playbook/example/playbook.yml
+ansible-playbook --extra-vars "hosts_name=dev web_site=blog" playbook/example/playbook.yml
