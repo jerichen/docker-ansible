@@ -21,3 +21,7 @@
     working_dir: /var/www/html
     prefer_dist: yes
 
+- name: create sites-enabled config file
+  template:
+    src: 'templates/php71.conf.j2'
+    dest: "/etc/nginx/sites-enabled/{{ web_site }}.conf"

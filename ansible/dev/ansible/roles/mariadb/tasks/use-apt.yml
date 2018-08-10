@@ -41,3 +41,32 @@
   notify:
     - restarted mariadb
 
+- name: Update mariadb root password for all root accounts
+  mysql_user:
+    name: root
+    host: "{{ item }}"
+    password: "{{ mysql_root_password }}"
+    state: present
+  with_items:
+    - "{{ mariadb_default_hosts }}"
+
+# TODO
+- name: Create a new database with name 'homestead'
+  mysql_db:
+    name: "{{ mysql_database }}"
+    state: present
+
+# TODO
+- name: Create a new user with name 'master' password 'password'
+  mysql_db:
+    name: "{{ mysql_user }}"
+    password: "{{ mysql_password }}"
+    state: present
+
+- name: Remove the test database
+  mysql_db:
+    name: test
+    state: absent
+  notify:
+    - restarted mariadb
+

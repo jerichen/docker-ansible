@@ -19,12 +19,11 @@ mariadb_apt_dependencies:
 mariadb_pip_dependencies:
   - MySQL-python
 
-
-#MYSQL_PORT: "3306"
-#MYSQL_ROOT_PASSWORD: "password"
-#MYSQL_DATABASE: "homestead"
-#MYSQL_USER: "homestead"
-#MYSQL_PASSWORD: "secret"
+mysql_port: "3306"
+mysql_root_password: "password"
+mysql_database: "homestead"
+mysql_user: "master"
+mysql_password: "secret"
 
 
 mariadb_default_hosts:
