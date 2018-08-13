@@ -1,14 +1,14 @@
-- name: Install MySQL apt dependencies
+- name: Install MariaDB apt dependencies
   apt:
     name: "{{ item }}"
     state: latest
   with_nested:
-    "{{ mysql_apt_dependencies }}"
+    "{{ mariadb_apt_dependencies }}"
 
 - name: Add repository key to the system
   apt_key:
-    keyserver: "{{ mysql_repo_key }}"
-    id: "{{ mysql_repo_id }}"
+    keyserver: "{{ mariadb_repo_key }}"
+    id: "{{ mariadb_repo_id }}"
     state: present
 
 - name: Install MySQL-python pip package
@@ -19,7 +19,7 @@
 
 - name: Install MySQL repository
   apt_repository:
-    repo: "{{ ubuntu_mysql_repo }}"
+    repo: "{{ ubuntu_mariadb_repo }}"
   when:
     ansible_distribution|lower == "ubuntu"
 
@@ -54,6 +54,7 @@
   notify:
     - restarted MySQL
 
+# TODO
 - name: Update MySQL root password for all root accounts
   mysql_user:
     name: root
