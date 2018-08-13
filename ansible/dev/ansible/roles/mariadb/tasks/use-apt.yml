@@ -1,25 +1,25 @@
-- name: Install MariaDB apt dependencies
+- name: Install MySQL apt dependencies
   apt:
     name: "{{ item }}"
     state: latest
   with_nested:
-    "{{ mariadb_apt_dependencies }}"
+    "{{ mysql_apt_dependencies }}"
 
 - name: Add repository key to the system
   apt_key:
-    keyserver: "{{ mariadb_repo_key }}"
-    id: "{{ mariadb_repo_id }}"
+    keyserver: "{{ mysql_repo_key }}"
+    id: "{{ mysql_repo_id }}"
     state: present
 
 - name: Install MySQL-python pip package
   pip:
     name: "{{ item }}"
     state: present
-  with_items: '{{ mariadb_pip_dependencies }}'
+  with_items: '{{ mysql_pip_dependencies }}'
 
-- name: Install MariaDB repository
+- name: Install MySQL repository
   apt_repository:
-    repo: "{{ ubuntu_mariadb_repo }}"
+    repo: "{{ ubuntu_mysql_repo }}"
   when:
     ansible_distribution|lower == "ubuntu"
 
@@ -30,25 +30,38 @@
     update_cache: yes
     cache_valid_time: 86400
 
-- name: Install mariadb server apt packages
+- name: Install MySQL server apt packages
   apt:
     name: "{{ item }}"
     state: latest
   with_items:
-    "{{mariadb_packages}}"
+    "{{mysql_packages}}"
   when:
-      mariadb_packages is defined
+      mysql_packages is defined
   notify:
-    - restarted mariadb
+    - restarted MySQL
 
-- name: Update mariadb root password for all root accounts
+- name: Copy the templates to their respestive destination
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode | default(644) }}"
+  with_items:
+    - { src: 'user-my.cnf.j2', dest: '/etc/mysql/my.cnf' }
+    - { src: 'root-my.cnf.j2', dest: '~/.my.cnf', mode: '600' }
+  notify:
+    - restarted MySQL
+
+- name: Update MySQL root password for all root accounts
   mysql_user:
     name: root
     host: "{{ item }}"
     password: "{{ mysql_root_password }}"
     state: present
   with_items:
-    - "{{ mariadb_default_hosts }}"
+    - "{{ mysql_default_hosts }}"
 
 # TODO
 - name: Create a new database with name 'homestead'
@@ -68,5 +81,5 @@
     name: test
     state: absent
   notify:
-    - restarted mariadb
+    - restarted MySQL
 

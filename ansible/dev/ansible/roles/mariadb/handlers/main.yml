@@ -1,17 +1,17 @@
-- name: restarted mariadb
+- name: restarted MySQL
   service:
     name: mysql
     state: restarted
     enabled: yes
     sleep: 5
 
-- name: reloaded mariadb
+- name: reloaded MySQL
   service:
     name: mysql
     state: reloaded
     enabled: yes
 
-- name: started mariadb
+- name: started MySQL
   service:
     name: mysql
     state: started
