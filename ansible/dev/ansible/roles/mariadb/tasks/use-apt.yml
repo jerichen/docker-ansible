@@ -1,86 +1,68 @@
-- name: Install MariaDB apt dependencies
-  apt:
-    name: "{{ item }}"
-    state: latest
-  with_nested:
-    "{{ mariadb_apt_dependencies }}"
+- name: Add the OS specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
 
-- name: Add repository key to the system
-  apt_key:
-    keyserver: "{{ mariadb_repo_key }}"
-    id: "{{ mariadb_repo_id }}"
-    state: present
-
-- name: Install MySQL-python pip package
-  pip:
-    name: "{{ item }}"
-    state: present
-  with_items: '{{ mysql_pip_dependencies }}'
-
-- name: Install MySQL repository
-  apt_repository:
-    repo: "{{ ubuntu_mariadb_repo }}"
-  when:
-    ansible_distribution|lower == "ubuntu"
-
-- name: Update and upgrade apt packages
-  apt:
-    force_apt_get: yes
-    upgrade: yes
-    update_cache: yes
-    cache_valid_time: 86400
-
-- name: Install MySQL server apt packages
-  apt:
-    name: "{{ item }}"
-    state: latest
+- name: Install the mysql packages in Debian derivatives
+  apt: name={{ item }} state=present update_cache=yes
   with_items:
-    "{{mysql_packages}}"
-  when:
-      mysql_packages is defined
+    - "{{ mysql_pkgs }}"
+  when: ansible_os_family == 'Debian'
+
+- name: Copy the my.cnf file
+  template: src=my.cnf.{{ ansible_os_family }}.j2 dest={{ mysql_conf_dir }}/my.cnf
   notify:
     - restarted MySQL
 
-- name: Copy the templates to their respestive destination
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    owner: root
-    group: root
-    mode: "{{ item.mode | default(644) }}"
-  with_items:
-    - { src: 'user-my.cnf.j2', dest: '/etc/mysql/my.cnf' }
-    - { src: 'root-my.cnf.j2', dest: '~/.my.cnf', mode: '600' }
+- name: Create the directory /etc/mysql/conf.d
+  file: path=/etc/mysql/conf.d state=directory
   notify:
     - restarted MySQL
 
-# TODO
-- name: Update MySQL root password for all root accounts
-  mysql_user:
-    name: root
-    host: "{{ item }}"
-    password: "{{ mysql_root_password }}"
-    state: present
+- name: started MySQL
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+    sleep: 5
+
+- name: update mysql root password for all root accounts
+  mysql_user: name=root host={{ item }} password={{ mysql_root_password }}
   with_items:
-    - "{{ mysql_default_hosts }}"
+    - "{{ ansible_hostname }}"
+    - 127.0.0.1
+    - ::1
+    - localhost
+  when: ansible_hostname != 'localhost'
 
-# TODO
-- name: Create a new database with name 'homestead'
-  mysql_db:
-    name: "{{ mysql_database }}"
-    state: present
+- name: update mysql root password for all root accounts
+  mysql_user: name=root host={{ item }} password={{ mysql_root_password }}
+  with_items:
+    - 127.0.0.1
+    - ::1
+    - localhost
+  when: ansible_hostname == 'localhost'
 
-# TODO
-- name: Create a new user with name 'master' password 'password'
-  mysql_db:
-    name: "{{ mysql_user }}"
-    password: "{{ mysql_password }}"
-    state: present
+- name: copy .my.cnf file with root password credentials
+  template: src=root-my.cnf.j2 dest=~/.my.cnf mode=0600
 
-- name: Remove the test database
-  mysql_db:
-    name: test
-    state: absent
-  notify:
-    - restarted MySQL
+- name: remove the test database
+  mysql_db: name=test state=absent
 
+- name: Create the database's
+  mysql_db: name={{ item.name }} state=present
+  with_items:
+    - "{{ mysql_db }}"
+  when: mysql_db|lower() != 'none'
+
+- name: Create the database users
+  mysql_user: name={{ item.name }}  password={{ item.pass|default("foobar") }}
+    priv={{ item.priv|default("*.*:ALL") }} state=present host={{ item.host | default("localhost") }}
+  with_items:
+    - "{{ mysql_users }}"
+  when: mysql_users|lower() != 'none'
+
+- name: Create the replication users
+  mysql_user: name={{ item.name }}  host="%" password={{ item.pass|default("foobar") }}
+    priv="*.*:REPLICATION SLAVE" state=present
+  with_items:
+    - "{{ mysql_repl_user }}"
+  when: mysql_repl_role == 'master'

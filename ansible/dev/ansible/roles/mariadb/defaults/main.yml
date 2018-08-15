@@ -20,6 +20,7 @@ mysql_pip_dependencies:
   - MySQL-python
 
 mysql_port: "3306"
+mysql_bind_address: "192.168.1.106"
 mysql_database: "homestead"
 
 # root
@@ -28,7 +29,7 @@ mysql_root_name: "root"
 mysql_root_password: "password"
 
 # user
-mysql_user_home: "/root"
+mysql_user_home: "~/"
 mysql_user_name: "master"
 mysql_user_password: "secret"
 
@@ -40,7 +41,6 @@ mysql_default_hosts:
 
 # This password is not secure! Please define your own password!
 mariadb_admin_password:  "{{ ansible_machine_id | hash('sha1') | truncate(24, True, '') }}"
-
 mariadb_enabled_on_startup: yes
 
 # Databases.
@@ -65,3 +65,22 @@ mariadb_group_users: []
 mariadb_log: ""
 mariadb_log_error: /var/log/mysql.err
 mariadb_syslog_tag: mysql
+
+
+mysql_db:
+  - name: foo
+    replicate: yes
+  - name: bar
+    replicate: no
+
+mysql_users:
+  - name: benz
+    pass: foobar
+    priv: "*.*:ALL"
+
+mysql_repl_user:
+  - name: repl
+    pass: foobar
+
+mysql_repl_role: master
+mysql_db_id: 7
