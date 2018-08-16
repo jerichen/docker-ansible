@@ -1,24 +1,3 @@
-mariadb_version: "10.3"
-mariadb_service: "mariadb"
-ubuntu_mariadb_repo: "deb [arch=amd64,arm64,ppc64el] http://ftp.ubuntu-tw.org/mirror/mariadb/repo/10.3/ubuntu bionic main"
-mariadb_repo_key: "keyserver.ubuntu.com"
-mariadb_repo_id: "0xF1656F24C74CD1D8"
-
-mariadb_packages:
-  - mariadb-server
-  - mariadb-client
-
-mariadb_apt_dependencies:
-  - software-properties-common
-  - build-essential
-  - libmysqlclient-dev
-  - python-mysqldb
-  - python-pip
-  - python-dev
-
-mysql_pip_dependencies:
-  - MySQL-python
-
 mysql_port: "3306"
 mysql_bind_address: "0.0.0.0"
 mysql_database: "homestead"
