@@ -60,6 +60,8 @@
     owner: root
     group: root
     mode: 0600
+  notify:
+    - restarted MySQL
 
 - name: copy .my.cnf file with root password credentials
   template:
@@ -67,6 +69,46 @@
     dest: "{{ mysql_user_home }}/.my.cnf"
     owner: "{{ mysql_user_name }}"
     mode: 0600
+  notify:
+    - restarted MySQL
+
+- name: remove the test database
+  mysql_db:
+    name: test
+    state: absent
+
+- name: Create the database's
+  mysql_db:
+    name: "{{ item.name }}"
+    state: present
+  with_items:
+    - "{{ mysql_database }}"
+  when:
+    mysql_db|lower() != 'none'
+
+# TODO
+- name: Create the database users
+  mysql_user:
+    name: "{{ item.name }}"
+    password: {{ item.pass|default("password") }}
+    priv: {{ item.priv|default("*.*:ALL,GRANT") }}
+    state: present
+    host: {{ item.host|default("localhost") }}
+  with_items:
+    - "{{ mysql_users }}"
+  when:
+    mysql_users|lower() != 'none'
+
+- name: Create the replication users
+  mysql_user:
+    name: "{{ item.name }}  "
+    host: "%"
+    password: {{ item.pass|default("password") }}
+    priv: {{ item.priv|default("*.*:REPLICATION SLAVE") }}
+    state:present
+  with_items:
+    - "{{ mysql_repl_users }}"
+  when: mysql_repl_role == 'master'
 
 #- name: Install the mysql packages in Debian derivatives
 #  apt: name={{ item }} state=present update_cache=yes
@@ -119,25 +161,25 @@
 #- name: copy .my.cnf file with root password credentials
 #  template: src=root-my.cnf.j2 dest=~/.my.cnf mode=0600
 
-- name: remove the test database
-  mysql_db: name=test state=absent
+#- name: remove the test database
+#  mysql_db: name=test state=absent
 
-- name: Create the database's
-  mysql_db: name={{ item.name }} state=present
-  with_items:
-  - "{{ mysql_db }}"
-  when: mysql_db|lower() != 'none'
+#- name: Create the database's
+#  mysql_db: name={{ item.name }} state=present
+#  with_items:
+#  - "{{ mysql_db }}"
+#  when: mysql_db|lower() != 'none'
 
-- name: Create the database users
-  mysql_user: name={{ item.name }}  password={{ item.pass|default("foobar") }}
-    priv={{ item.priv|default("*.*:ALL") }} state=present host={{ item.host | default("localhost") }}
-  with_items:
-  - "{{ mysql_users }}"
-  when: mysql_users|lower() != 'none'
+#- name: Create the database users
+#  mysql_user: name={{ item.name }}  password={{ item.pass|default("foobar") }}
+#    priv={{ item.priv|default("*.*:ALL") }} state=present host={{ item.host | default("localhost") }}
+#  with_items:
+#  - "{{ mysql_users }}"
+#  when: mysql_users|lower() != 'none'
 
-- name: Create the replication users
-  mysql_user: name={{ item.name }}  host="%" password={{ item.pass|default("foobar") }}
-    priv="*.*:REPLICATION SLAVE" state=present
-  with_items:
-  - "{{ mysql_repl_user }}"
-  when: mysql_repl_role == 'master'
+#- name: Create the replication users
+#  mysql_user: name={{ item.name }}  host="%" password={{ item.pass|default("foobar") }}
+#    priv="*.*:REPLICATION SLAVE" state=present
+#  with_items:
+#  - "{{ mysql_repl_user }}"
+#  when: mysql_repl_role == 'master'
