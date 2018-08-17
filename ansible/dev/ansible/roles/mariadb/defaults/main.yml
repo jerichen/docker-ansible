@@ -11,6 +11,7 @@ mysql_user_home: "~/"
 mysql_user_name: "master"
 mysql_user_password: "secret"
 
+# Databases.
 mysql_database:
   - name: homestead
     collation: utf8mb4_unicode_ci
@@ -21,11 +22,13 @@ mysql_database:
     encoding: utf8mb4
     replicate: no
 
+# Users.
 mysql_users:
   - name: master
     pass: password
     priv: "*.*:ALL"
 
+# repl Users.
 mysql_repl_users:
   - name: repl
     pass: password
@@ -40,24 +43,6 @@ mysql_default_hosts:
 # This password is not secure! Please define your own password!
 mariadb_admin_password:  "{{ ansible_machine_id | hash('sha1') | truncate(24, True, '') }}"
 mariadb_enabled_on_startup: yes
-
-# Databases.
-mariadb_default_databases: []
-mariadb_host_databases: []
-mariadb_group_databases: []
-#   - name: example
-#     collation: utf8_general_ci
-#     encoding: utf8
-#     replicate: 1
-
-# Users.
-mariadb_default_users: []
-mariadb_host_users: []
-mariadb_group_users: []
-#   - name: example
-#     host: 127.0.0.1
-#     password: secret
-#     priv: *.*:USAGE
 
 # Logging settings.
 mariadb_log: ""

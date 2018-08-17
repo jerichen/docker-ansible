@@ -2,18 +2,18 @@
 ansible dev -m ping
 
 ### roles folder info
-- defaults : 可被覆寫的變數
+- defaults : 默認變量存放目錄
     - 一定要有main.yml
 - files : 需複製到 Managed node 的檔案
-- handlers
+- handlers : 處理程式(當發生改變時需要執行的操作)
     - 一定要有main.yml
-- meta : 特殊設定及其他依賴關係
+- meta : 角色依賴關係處理
     - 一定要有main.yml
-- tasks : 主要的任務執行
+- tasks : 具體執行的任務操作定義
     - 一定要有main.yml
-- templates : 集中存放 Jinja2 模板的目錄
+- templates : 模板文件存放目錄
 - tests
-- vars : 不該被覆寫的變數
+- vars : 變量文件目錄
     - 一定要有main.yml
 
 ### 全局變量
