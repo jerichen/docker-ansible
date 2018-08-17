@@ -27,12 +27,14 @@ mysql_users:
   - name: master
     pass: password
     priv: "*.*:ALL"
+    host: "%"
 
 # repl Users.
 mysql_repl_users:
   - name: repl
     pass: password
     priv: "*.*:ALL"
+    host: "%"
 
 # Hosts
 mysql_default_hosts:
