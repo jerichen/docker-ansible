@@ -1,13 +1,13 @@
 #jinja2: lstrip_blocks: "True", trim_blocks: "True"
 [client]
 port                           = 3306
-socket                         = /var/lib/mysql/data/mysql.sock
+socket                         = /var/run/mysqld/mysqld.sock
 
 [mysqld]
 user                           = mysql
 default_storage_engine         = InnoDB
-socket                         = /var/lib/mysql/data/mysql.sock
-pid_file                       = /var/lib/mysql/data/mysql.pid
+socket                         = /var/run/mysqld/mysqld.sock
+pid_file                       = /var/run/mysqld/mysqld.pid
 port                           = 3306
 bind-address                   = 0.0.0.0
 
@@ -24,7 +24,7 @@ innodb                         = FORCE
 innodb_strict_mode             = 1
 
 [DATA STORAGE]
-datadir                        = /var/lib/mysql/data/
+datadir                        = /var/lib/mysql
 
 [BINARY LOGGING]
 log_bin                        = /var/lib/mysql/data/mysql-bin
@@ -43,10 +43,10 @@ table_definition_cache         = 1024
 table_open_cache               = 2048
 
 [LOGGING]
-log_error                      = /var/lib/mysql/data/mysql-error.log
+log_error                      = /var/log/mysql/error.log
 log_queries_not_using_indexes  = 1
 slow_query_log                 = 1
-slow_query_log_file            = /var/lib/mysql/data/mysql-slow.log
+slow_query_log_file            = /var/log/mysql/mysql-slow.log
 server-id                      = {{ mysql_db_id }}
 
 [INNODB]
