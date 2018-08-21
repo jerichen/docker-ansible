@@ -8,24 +8,25 @@
   debug:
     msg: "{{ message }}"
 
-- debug: var=inventory_group_var
-- debug: var=website
-
 # task 3
 - name: debug
   debug:
     msg:
       "{{ foo }}"
 
+# test group_vars
+- debug: var=inventory_group_var
+- debug: var=website
+
 # create new laravel website
-#- name: composer create-project laravel
-#  composer:
-#    command: create-project
-#    arguments: '--prefer-dist laravel/laravel {{ website }}'
-#    working_dir: /var/www/html
-#    prefer_dist: yes
-#
-#- name: create sites-enabled config file
-#  template:
-#    src: 'templates/php71.conf.j2'
-#    dest: "/etc/nginx/sites-enabled/{{ website }}.conf"
+- name: composer create-project laravel
+  composer:
+    command: create-project
+    arguments: '--prefer-dist laravel/laravel {{ website }}'
+    working_dir: /var/www/html
+    prefer_dist: yes
+
+- name: create sites-enabled config file
+  template:
+    src: 'templates/php71.conf.j2'
+    dest: "/etc/nginx/sites-enabled/{{ website }}.conf"
