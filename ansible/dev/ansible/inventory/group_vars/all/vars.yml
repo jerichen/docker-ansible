@@ -1,0 +1,10 @@
+# root
+ansible_root: "{{ inventory_dir | dirname }}"
+
+# playbook
+ansible_playbook_root: "{{ ansible_root }}/playbook"
+
+# test debug
+inventory_group_var: "inventory group var"
+
+website: blog

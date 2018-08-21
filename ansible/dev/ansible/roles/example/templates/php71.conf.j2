@@ -1,5 +1,5 @@
 #jinja2: lstrip_blocks: "True", trim_blocks: "True"
-{% if web_site is defined %}
+{% if website is defined %}
     server {
         # support http and ipv6
         listen 80;
@@ -9,8 +9,8 @@
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        server_name {{ web_site }};
-        root /var/www/html/{{ web_site }}/public;
+        server_name {{ website }};
+        root /var/www/html/{{ website }}/public;
         index index.php index.html index.htm;
 
         charset utf-8;

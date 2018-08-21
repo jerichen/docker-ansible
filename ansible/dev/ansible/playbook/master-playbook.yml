@@ -5,4 +5,4 @@
 - import_playbook: redis/playbook.yml
 - import_playbook: composer/playbook.yml
 
-- import_playbook: example/playbook.yml
+#- import_playbook: example/playbook.yml
