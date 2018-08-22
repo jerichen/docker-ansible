@@ -31,18 +31,18 @@ services:
 
 ## centos Managed Container ##################################
     
-    centos:
-#      build:
-#        context: ./managed-node-centos
-      image:
-        jerichen/managed-node-centos:latest
-      volumes:
-        - ${MANAGED_NODE_CENTOS_LOG_PATH}:/var/log
-      ports:
-        - "${MANAGED_NODE_CENTOS_SSH_PORT}:22"
-        - "${MANAGED_NODE_CENTOS_HTTP_PORT}:80"
-        - "${MANAGED_NODE_CENTOS_HTTPS_PORT}:443"
-        - "${MANAGED_NODE_CENTOS_MYSQL_PORT}:3306"
-        - "${MANAGED_NODE_CENTOS_REDIS_PORT}:6379"
-      container_name: web02
-      privileged: true
+#    centos:
+##      build:
+##        context: ./managed-node-centos
+#      image:
+#        jerichen/managed-node-centos:latest
+#      volumes:
+#        - ${MANAGED_NODE_CENTOS_LOG_PATH}:/var/log
+#      ports:
+#        - "${MANAGED_NODE_CENTOS_SSH_PORT}:22"
+#        - "${MANAGED_NODE_CENTOS_HTTP_PORT}:80"
+#        - "${MANAGED_NODE_CENTOS_HTTPS_PORT}:443"
+#        - "${MANAGED_NODE_CENTOS_MYSQL_PORT}:3306"
+#        - "${MANAGED_NODE_CENTOS_REDIS_PORT}:6379"
+#      container_name: web02
+#      privileged: true

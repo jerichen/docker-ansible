@@ -32,13 +32,13 @@ folder_directory:
 # nginx_vhost
 nginx_vhost:
   - src: "~/dev/ansible/roles/nginx/files/php71.conf"
-    dest: "/etc/nginx/sites-enabled/php71.conf"
+    dest: "/etc/nginx/sites-enabled/local-php71.com.tw"
     owner: "root"
     group: "root"
     mode: "0755"
     backup: "yes"
   - src: "~/dev/ansible/roles/nginx/files/php56.conf"
-    dest: "/etc/nginx/sites-enabled/php56.conf"
+    dest: "/etc/nginx/sites-enabled/local-php56.com.tw"
     owner: "root"
     group: "root"
     mode: "0755"

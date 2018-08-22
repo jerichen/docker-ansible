@@ -12,10 +12,9 @@
 - name: debug
   debug:
     msg:
-      "{{ foo }}"
+      "{{ inventory_group_var }}"
 
-# test group_vars
-- debug: var=inventory_group_var
+# test debug
 - debug: var=website
 
 # create new laravel website
