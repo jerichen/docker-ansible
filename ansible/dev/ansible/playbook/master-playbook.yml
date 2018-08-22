@@ -1,6 +1,6 @@
 - import_playbook: git/playbook.yml
-- import_playbook: composer/playbook.yml
 - import_playbook: php7/playbook.yml
+- import_playbook: composer/playbook.yml
 - import_playbook: nginx/playbook.yml
 - import_playbook: mysql/playbook.yml
 - import_playbook: redis/playbook.yml

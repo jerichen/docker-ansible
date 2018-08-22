@@ -8,4 +8,5 @@ ansible_playbook_root: "{{ ansible_root }}/playbook"
 inventory_group_var: "inventory group var"
 
 website: "local-blog.com.tw"
-php_version: "7.1"
+php_version: "php7.1"
+php_71_fpm: "php7.1-fpm"

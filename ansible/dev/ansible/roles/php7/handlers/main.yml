@@ -1,11 +1,17 @@
-- name: restarted php{{ php_version }}-fpm
+- name: restarted php7.1-fpm
   service:
-    name: php{{ php_version }}-fpm
+    name: php7.1-fpm
     state: restarted
     enabled: yes
 
-- name: reloaded php{{ php_version }}-fpm
+- name: reloaded php7.1-fpm
   service:
-    name: php{{ php_version }}-fpm
+    name: php-fpm7.1
     state: reloaded
+    enabled: yes
+
+- name: started php7.1-fpm
+  service:
+    name: php7.1-fpm
+    state: started
     enabled: yes
