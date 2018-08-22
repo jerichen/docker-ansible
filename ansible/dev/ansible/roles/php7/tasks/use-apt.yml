@@ -30,4 +30,4 @@
   when:
     apt_php_packages is defined
   notify:
-    - restarted php{{ apt_php_version }}-fpm
+    - restarted php{{ php_version }}-fpm

@@ -27,5 +27,5 @@
 
 - name: create sites-enabled config file
   template:
-    src: 'templates/php71.conf.j2'
+    src: 'templates/{{ php_version }}.conf.j2'
     dest: "/etc/nginx/sites-enabled/{{ website }}.conf"

@@ -7,6 +7,5 @@ ansible_playbook_root: "{{ ansible_root }}/playbook"
 # test debug
 inventory_group_var: "inventory group var"
 
-website: local-blog.com.tw
-php: php7.1
-php-fpm: php7.1-fpm
+website: "local-blog.com.tw"
+php_version: "7.1"
