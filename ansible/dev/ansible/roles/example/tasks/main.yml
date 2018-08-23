@@ -29,3 +29,15 @@
   template:
     src: 'templates/{{ php_version }}.conf.j2'
     dest: "/etc/nginx/sites-enabled/{{ website }}.conf"
+
+- name: Change Storage Permission
+  file:
+    path: "/var/www/html/{{ website }}/storage"
+    mode: 0775
+    state: absent
+
+- name: ubuntu restart nginx
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes
