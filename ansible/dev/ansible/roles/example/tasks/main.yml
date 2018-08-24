@@ -18,12 +18,18 @@
 - debug: var=website
 
 # create new laravel website
+- name: check website not install
+  stat:
+    path: "/var/www/html/{{ website }}"
+  register: laravel_path
+
 - name: composer create-project laravel
   composer:
     command: create-project
     arguments: '--prefer-dist laravel/laravel {{ website }}'
     working_dir: /var/www/html
     prefer_dist: yes
+  when: laravel_path.stat.exists == False
 
 - name: create sites-enabled config file
   template:
@@ -32,9 +38,9 @@
 
 - name: Change Storage Permission
   file:
-    path: "/var/www/html/{{ website }}/storage"
-    mode: 0775
-    state: absent
+    path: "/var/www/html/{{ website }}/storage/"
+    mode: 0777
+    recurse: yes
 
 - name: ubuntu restart nginx
   service:
