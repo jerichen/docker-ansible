@@ -6,11 +6,6 @@
     - libselinux-python
     - epel-release
 
-#- name: Installing remi-repo on a Centos 7
-#  yum:
-#    name: http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-#    state: present
-
 - name: Add repository for Centos7
   yum_repository:
     name: remi-php71
@@ -27,21 +22,21 @@
   yum:
     name: yum-utils
     state: latest
-    
+
 - name: Update all packages
   yum:
     name: "*"
     state: latest
 
-#- name: Install php packages
-#  yum:
-#    name: "{{ item }}"
-#    state: latest
-#  with_nested:
-#    "{{ yum_php_packages }}"
-#  when:
-#    yum_php_packages is defined
-#  notify: restarted php7.1-fpm on centos
+- name: Install php packages
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_nested:
+    "{{ yum_php_packages }}"
+  when:
+    yum_php_packages is defined
+  notify: restarted php7.1-fpm on centos
 
 #- name: Force start of php7.1-fpm service.
 #  command: service {{ php_71_fpm }} start
