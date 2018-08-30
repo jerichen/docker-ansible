@@ -3,11 +3,20 @@
 
 - name: Install remi repo
   yum:
-    name: http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
+    name: https://repo.mysql.com/mysql57-community-release-el7-11.noarch.rpm
+    #    name: http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
     state: present
   when:
     ansible_distribution == 'CentOS' and
     ansible_distribution_major_version == '7'
+
+- name: Install yum-utils packages
+  yum:
+    name: yum-utils
+    state: present
+
+- name: enable remi mysql repo
+  shell: yum-config-manager --enable mysql57-community
 
 - name: Install MySQL server yum packages
   yum:
@@ -36,8 +45,8 @@
   notify:
     - restarted MySQL on centos
 
-#- name: Force start of mysql service.
-#  command: service mysql start
+- name: Force start of mysql service.
+  command: systemctl start mysqld
 
 - name: update mysql root password for all root accounts
   mysql_user:

@@ -20,8 +20,14 @@
     sleep: 5
 
 # centos
+- name: started MySQL on centos
+  service:
+    name: mysqld
+    state: started
+    enabled: yes
+
 - name: restarted MySQL on centos
   service:
-    name: mysql
+    name: mysqld
     state: restarted
     enabled: yes
