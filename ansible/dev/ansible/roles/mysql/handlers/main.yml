@@ -1,3 +1,4 @@
+# ubuntu
 - name: restarted MySQL
   service:
     name: mysql
@@ -17,3 +18,10 @@
     state: started
     enabled: yes
     sleep: 5
+
+# centos
+- name: restarted MySQL on centos
+  service:
+    name: mysql
+    state: restarted
+    enabled: yes

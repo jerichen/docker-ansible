@@ -1,14 +1,16 @@
-- name: debug
-  debug:
-    msg:
-      "{{ ansible_distribution }}"
-
 - name: Add the OS specific variables
   include_vars: "{{ ansible_distribution }}.yml"
-#  include_vars:  "{{ ansible_os_family }}.yml"
 
-- name: Install MySQL server apt packages
-  apt:
+- name: Install remi repo
+  yum:
+    name: http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
+    state: present
+  when:
+    ansible_distribution == 'CentOS' and
+    ansible_distribution_major_version == '7'
+
+- name: Install MySQL server yum packages
+  yum:
     name: "{{ item }}"
     state: present
     update_cache: yes
@@ -25,17 +27,17 @@
     group: root
     mode: 0640
   notify:
-    - restarted MySQL
+    - restarted MySQL on centos
 
 - name: Create the directory /etc/mysql/conf.d
   file:
     path: "/etc/mysql/conf.d"
     state: directory
   notify:
-    - restarted MySQL
+    - restarted MySQL on centos
 
-- name: Force start of mysql service.
-  command: service mysql start
+#- name: Force start of mysql service.
+#  command: service mysql start
 
 - name: update mysql root password for all root accounts
   mysql_user:
@@ -67,7 +69,7 @@
     owner: "{{ mysql_root_name }}"
     mode: 0600
   notify:
-    - restarted MySQL
+    - restarted MySQL on centos
 
 - name: copy .my.cnf file with root password credentials
   template:
@@ -76,7 +78,7 @@
     owner: "{{ mysql_user_name }}"
     mode: 0600
   notify:
-    - restarted MySQL
+    - restarted MySQL on centos
 
 - name: remove the test database
   mysql_db:
@@ -104,7 +106,7 @@
   when:
     mysql_users|lower() != 'none'
   notify:
-    - restarted MySQL
+    - restarted MySQL on centos
 
 - name: Create the replication users
   mysql_user:
@@ -118,4 +120,4 @@
   when:
     mysql_repl_role == 'master'
   notify:
-    - restarted MySQL
+    - restarted MySQL on centos

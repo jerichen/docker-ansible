@@ -1,0 +1,7 @@
+---
+
+mysql_packages:
+  - mysql-community-server
+
+mysql_service: mysql
+mysql_conf_dir: "/etc/"
