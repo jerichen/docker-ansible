@@ -3,8 +3,8 @@
     name: "{{ item }}"
     state: latest
   with_items:
-    - libselinux-python
-    - epel-release
+  - libselinux-python
+  - epel-release
 
 - name: Install remi repo
   yum:
@@ -19,20 +19,26 @@
     name: yum-utils
     state: present
 
-- name: enable remi php71 repo
-  shell: yum-config-manager --enable remi-php71
+- name: enable remi redis repo
+  shell: yum-config-manager --enable rhel-server-rhscl-7-rpms
 
 - name: Update all packages
   yum:
     name: "*"
     state: latest
 
-- name: Install php packages
+- name: Install Redis server
   yum:
-    name: "{{ item }}"
-    state: latest
-  with_nested:
-    "{{ yum_php_packages }}"
-  when:
-    yum_php_packages is defined
-  notify: restarted php7.1-fpm on centos
+    name: redis
+    state: present
+
+- name: Ensure Redis Configuration
+  template:
+    src: redis.conf.j2
+    dest: /etc/redis.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restarted redis
+

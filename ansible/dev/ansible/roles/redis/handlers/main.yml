@@ -1,9 +1,9 @@
+# ubuntu
 - name: restarted redis
   service:
     name: redis-server
     state: restarted
     enabled: yes
-    sleep: 5
 
 - name: reloaded redis
   service:
@@ -16,4 +16,10 @@
     name: redis-server
     state: started
     enabled: yes
-    sleep: 5
+
+# centos
+- name: restarted redis on centos
+  service:
+    name: redis
+    state: restarted
+    enabled: yes
