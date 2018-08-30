@@ -45,7 +45,3 @@
   when:
     yum_php_packages is defined
   notify: restarted php7.1-fpm on centos
-
-#- name: Force start of php7.1-fpm service.
-#  command: service {{ php_71_fpm }} start
-# systemctl status php-fpm
