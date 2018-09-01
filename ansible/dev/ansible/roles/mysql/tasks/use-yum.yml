@@ -4,19 +4,10 @@
 - name: Install remi repo
   yum:
     name: https://repo.mysql.com/mysql57-community-release-el7-11.noarch.rpm
-    #    name: http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
     state: present
   when:
     ansible_distribution == 'CentOS' and
     ansible_distribution_major_version == '7'
-
-- name: Install yum-utils packages
-  yum:
-    name: yum-utils
-    state: present
-
-- name: enable remi mysql repo
-  shell: yum-config-manager --enable mysql57-community
 
 - name: Install MySQL server yum packages
   yum:
@@ -28,9 +19,15 @@
   when:
     mysql_packages is defined
 
+- name: started MySQL on centos
+  service:
+    name: mysqld
+    state: started
+    enabled: yes
+
 - name: Copy the my.cnf file
   template:
-    src: "my.cnf.j2"
+    src: "{{ ansible_distribution }}-my.cnf.j2"
     dest: "{{ mysql_conf_dir }}/my.cnf"
     owner: root
     group: root
@@ -45,14 +42,39 @@
   notify:
     - restarted MySQL on centos
 
-- name: Force start of mysql service.
-  command: systemctl start mysqld
+# 取得預設的password 再進行註冊且儲存變數
+- name: get mysql version
+  command: mysql --version
+  register: mysql_cli_version
+
+- name: grep temporary password for root user
+  shell: "echo $(grep 'temporary.*root@localhost' /var/log/mysqld.log | sed 's/.*root@localhost: //')"
+  args:
+    creates: /root/.my.cnf
+  register: mysql_tmp_root_passwort
+
+- name: grep temporary password for root user /var/log/mysqld.log
+  shell: "echo $(grep 'temporary.*root@localhost' /var/log/mysqld.log | sed 's/.*root@localhost: //')"
+  args:
+    creates: "{{ mysql_root_home }}/.my.cnf"
+  register: mysql_tmp_root_password
+
+- name: use temporary password for root user
+  set_fact:
+    mysql_root_old_password: "{{ mysql_tmp_root_password.stdout }}"
+
+- name: update mysql root password for localhost
+  shell: 'mysql -e "SET PASSWORD = PASSWORD(''{{ mysql_root_password }}'');" --connect-expired-password -uroot -p"{{ mysql_tmp_root_password.stdout }}"'
+  args:
+    creates: "{{ mysql_root_home }}/.my.cnf"
+  when: "mysql_root_password != '' and '5.7.' in mysql_cli_version.stdout"
 
 - name: update mysql root password for all root accounts
   mysql_user:
     name: root
     host: "{{ item }}"
     password: "{{ mysql_root_password }}"
+    check_implicit_admin: true
   with_items:
     - "{{ ansible_hostname }}"
     - 127.0.0.1
@@ -80,7 +102,7 @@
   notify:
     - restarted MySQL on centos
 
-- name: copy .my.cnf file with root password credentials
+- name: copy .my.cnf file with user password credentials
   template:
     src: "user-my.cnf.j2"
     dest: "{{ mysql_user_home }}/.my.cnf"

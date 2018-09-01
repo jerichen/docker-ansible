@@ -19,7 +19,7 @@
 
 - name: Copy the my.cnf file
   template:
-    src: "my.cnf.j2"
+    src: "{{ ansible_distribution }}-my.cnf.j2"
     dest: "{{ mysql_conf_dir }}/my.cnf"
     owner: root
     group: root

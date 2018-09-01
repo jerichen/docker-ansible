@@ -4,7 +4,7 @@ mysql_bind_address: "0.0.0.0"
 # root
 mysql_root_home: "/root"
 mysql_root_name: "root"
-mysql_root_password: "password"
+mysql_root_password: "Passw0rd!"
 
 # user
 mysql_user_home: "~/"
@@ -25,14 +25,14 @@ mysql_database:
 # Users.
 mysql_users:
   - name: master
-    pass: password
+    pass: secret
     priv: "*.*:ALL"
     host: "%"
 
 # repl Users.
 mysql_repl_users:
   - name: repl
-    pass: password
+    pass: secret
     priv: "*.*:ALL"
     host: "%"
 
