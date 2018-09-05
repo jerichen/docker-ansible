@@ -25,14 +25,14 @@ mysql_database:
 # Users.
 mysql_users:
   - name: master
-    pass: secret
+    pass: MasterPass1!
     priv: "*.*:ALL"
     host: "%"
 
 # repl Users.
 mysql_repl_users:
   - name: repl
-    pass: secret
+    pass: ReplPass1!
     priv: "*.*:ALL"
     host: "%"
 
