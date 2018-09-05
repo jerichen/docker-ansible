@@ -57,13 +57,8 @@
   set_fact:
     mysql_root_old_password: "{{ mysql_tmp_root_password.stdout }}"
 
-- name: debug
-  debug:
-    msg:
-      "{{ mysql_tmp_root_password.stdout }}"
-
 - name: update mysql root password for localhost
-  shell: 'mysql -e "ALTER USER ''{{ mysql_root_name }}''@''localhost'' IDENTIFIED BY ''{{ mysql_root_password }}'';" --connect-expired-password -uroot -p"{{ mysql_root_old_password }}"'
+  shell: 'mysql -e "ALTER USER ''{{ mysql_root_name }}''@''localhost'' IDENTIFIED BY ''{{ mysql_root_password }}'';" --connect-expired-password -uroot -p"{{ mysql_root_old_password }}";'
   args:
     creates: "{{ mysql_root_home }}/.my.cnf"
   when: "mysql_root_password != '' and '5.7.' in mysql_cli_version.stdout"
@@ -107,9 +102,11 @@
 - name: copy .my.cnf file with user password credentials
   template:
     src: "user-my.cnf.j2"
-    dest: "{{ mysql_user_home }}/.my.cnf"
-    owner: "{{ mysql_user_name }}"
+    dest: "{{ item.home }}/.my.cnf"
+    owner: "{{ item.name }}"
     mode: 0600
+  with_items:
+    - "{{ mysql_users }}"
   notify:
     - restarted MySQL on centos
 

@@ -1,11 +1,5 @@
-- name: debug
-  debug:
-    msg:
-      "{{ ansible_distribution }}"
-
 - name: Add the OS specific variables
   include_vars: "{{ ansible_distribution }}.yml"
-#  include_vars:  "{{ ansible_os_family }}.yml"
 
 - name: Install MySQL server apt packages
   apt:
@@ -16,6 +10,9 @@
     "{{ mysql_packages }}"
   when:
     mysql_packages is defined
+
+- name: Force start of mysql service.
+  command: service mysql start
 
 - name: Copy the my.cnf file
   template:
@@ -34,14 +31,34 @@
   notify:
     - restarted MySQL
 
-- name: Force start of mysql service.
-  command: service mysql start
+# 取得預設的password 再進行註冊且儲存變數
+- name: get mysql version
+  command: mysql --version
+  register: mysql_cli_version
+
+- name: grep temporary password for root user /var/log/mysqld.log
+  shell: "echo $(grep 'temporary.*root@localhost' /var/log/mysqld.log | tail -1 | sed 's/.*root@localhost: //')"
+  args:
+    creates: "{{ mysql_root_home }}/.my.cnf"
+  register: mysql_tmp_root_password
+
+- name: use temporary password for root user
+  set_fact:
+    mysql_root_old_password: "{{ mysql_tmp_root_password.stdout }}"
+
+- name: update mysql root password for localhost
+  shell: 'mysql -e "ALTER USER ''{{ mysql_root_name }}''@''localhost'' IDENTIFIED BY ''{{ mysql_root_password }}'';" --connect-expired-password -uroot -p"{{ mysql_root_old_password }}";'
+  args:
+    creates: "{{ mysql_root_home }}/.my.cnf"
+  when: "mysql_root_password != '' and '5.7.' in mysql_cli_version.stdout"
 
 - name: update mysql root password for all root accounts
   mysql_user:
     name: root
     host: "{{ item }}"
     password: "{{ mysql_root_password }}"
+    login_user: '{{ mysql_root_name }}'
+    login_password: '{{ mysql_root_password }}'
   with_items:
     - "{{ ansible_hostname }}"
     - 127.0.0.1
@@ -54,6 +71,8 @@
     name: root
     host: "{{ item }}"
     password: "{{ mysql_root_password }}"
+    login_user: '{{ mysql_root_name }}'
+    login_password: '{{ mysql_root_password }}'
   with_items:
     - 127.0.0.1
     - ::1
@@ -69,14 +88,16 @@
   notify:
     - restarted MySQL
 
-- name: copy .my.cnf file with root password credentials
+- name: copy .my.cnf file with user password credentials
   template:
     src: "user-my.cnf.j2"
-    dest: "{{ mysql_user_home }}/.my.cnf"
-    owner: "{{ mysql_user_name }}"
+    dest: "{{ item.home }}/.my.cnf"
+    owner: "{{ item.name }}"
     mode: 0600
+  with_items:
+  - "{{ mysql_users }}"
   notify:
-    - restarted MySQL
+  - restarted MySQL
 
 - name: remove the test database
   mysql_db:
@@ -88,7 +109,7 @@
     name: "{{ item.name }}"
     state: present
   with_items:
-    - "{{ mysql_database }}"
+  - "{{ mysql_database }}"
   when:
     mysql_database|lower() != 'none'
 
@@ -114,7 +135,7 @@
     state: present
     host: "{{ item.host|default('localhost') }}"
   with_items:
-    - "{{ mysql_repl_users }}"
+  - "{{ mysql_repl_users }}"
   when:
     mysql_repl_role == 'master'
   notify:
