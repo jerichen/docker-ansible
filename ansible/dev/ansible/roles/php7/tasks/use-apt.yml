@@ -19,6 +19,7 @@
     force_apt_get: yes
     upgrade: yes
     update_cache: yes
+    cache_valid_time: 86400
 
 - name: Install php packages
   apt:
