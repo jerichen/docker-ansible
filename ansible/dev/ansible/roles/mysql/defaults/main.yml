@@ -4,12 +4,12 @@ mysql_bind_address: "0.0.0.0"
 # root
 mysql_root_home: "/root"
 mysql_root_name: "root"
-mysql_root_password: "Passw0rd!"
+mysql_root_password: "NewPassRoot!"
 
 # user
 mysql_user_home: "~/"
 mysql_user_name: "master"
-mysql_user_password: "secret"
+mysql_user_password: "NewPassMaster!"
 
 # Databases.
 mysql_database:

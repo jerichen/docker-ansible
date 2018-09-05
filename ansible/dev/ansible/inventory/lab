@@ -1,6 +1,6 @@
 [dev]
 #web-01  ansible_ssh_host=10.0.10.80 ansible_ssh_port=3332 ansible_user=master ansible_ssh_common_args="-o ForwardAgent=yes"
-#web-02  ansible_ssh_host=10.0.10.80  ansible_ssh_port=3333 ansible_user=master ansible_ssh_common_args="-o ForwardAgent=yes"
+web-02  ansible_ssh_host=10.0.10.80  ansible_ssh_port=3333 ansible_user=master ansible_ssh_common_args="-o ForwardAgent=yes"
 
 #web-01  ansible_ssh_host=192.168.1.105 ansible_ssh_port=3332 ansible_user=master ansible_ssh_common_args="-o ForwardAgent=yes"
-web-02  ansible_ssh_host=192.168.1.105  ansible_ssh_port=3333 ansible_user=master ansible_ssh_common_args="-o ForwardAgent=yes"
+#web-02  ansible_ssh_host=192.168.1.105  ansible_ssh_port=3333 ansible_user=master ansible_ssh_common_args="-o ForwardAgent=yes"

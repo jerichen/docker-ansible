@@ -47,14 +47,8 @@
   command: mysql --version
   register: mysql_cli_version
 
-- name: grep temporary password for root user
-  shell: "echo $(grep 'temporary.*root@localhost' /var/log/mysqld.log | sed 's/.*root@localhost: //')"
-  args:
-    creates: /root/.my.cnf
-  register: mysql_tmp_root_passwort
-
 - name: grep temporary password for root user /var/log/mysqld.log
-  shell: "echo $(grep 'temporary.*root@localhost' /var/log/mysqld.log | sed 's/.*root@localhost: //')"
+  shell: "echo $(grep 'temporary.*root@localhost' /var/log/mysqld.log | tail -1 | sed 's/.*root@localhost: //')"
   args:
     creates: "{{ mysql_root_home }}/.my.cnf"
   register: mysql_tmp_root_password
@@ -63,8 +57,13 @@
   set_fact:
     mysql_root_old_password: "{{ mysql_tmp_root_password.stdout }}"
 
+- name: debug
+  debug:
+    msg:
+      "{{ mysql_tmp_root_password.stdout }}"
+
 - name: update mysql root password for localhost
-  shell: 'mysql -e "SET PASSWORD = PASSWORD(''{{ mysql_root_password }}'');" --connect-expired-password -uroot -p"{{ mysql_tmp_root_password.stdout }}"'
+  shell: 'mysql -e "ALTER USER ''{{ mysql_root_name }}''@''localhost'' IDENTIFIED BY ''{{ mysql_root_password }}'';" --connect-expired-password -uroot -p"{{ mysql_root_old_password }}"'
   args:
     creates: "{{ mysql_root_home }}/.my.cnf"
   when: "mysql_root_password != '' and '5.7.' in mysql_cli_version.stdout"
@@ -74,7 +73,8 @@
     name: root
     host: "{{ item }}"
     password: "{{ mysql_root_password }}"
-    check_implicit_admin: true
+    login_user: '{{ mysql_root_name }}'
+    login_password: '{{ mysql_root_password }}'
   with_items:
     - "{{ ansible_hostname }}"
     - 127.0.0.1
@@ -87,6 +87,8 @@
     name: root
     host: "{{ item }}"
     password: "{{ mysql_root_password }}"
+    login_user: '{{ mysql_root_name }}'
+    login_password: '{{ mysql_root_password }}'
   with_items:
     - 127.0.0.1
     - ::1
