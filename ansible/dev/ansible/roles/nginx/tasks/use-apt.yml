@@ -1,11 +1,11 @@
-- name: Ubuntu install web server
+- name: Install web server
   apt:
     name: nginx
     state: latest
   when:
     ansible_distribution == 'Ubuntu'
   notify:
-    - ubuntu restart nginx
+    - restarted nginx
 
 - name: delete conf
   file:

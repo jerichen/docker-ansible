@@ -7,7 +7,7 @@
 
 - name: reloaded php7.1-fpm
   service:
-    name: php-fpm7.1
+    name: php7.1-fpm
     state: reloaded
     enabled: yes
 

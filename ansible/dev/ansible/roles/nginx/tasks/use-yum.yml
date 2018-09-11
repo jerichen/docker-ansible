@@ -1,9 +1,78 @@
-- name: CentOS install web server
+- name: Install requires package for yum module
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - epel-release
+
+- name: Install web server
   yum:
     name: nginx
     state: latest
   when:
     ansible_distribution == 'CentOS' and
-    ansible_distribution_major_version == '6'
+    ansible_distribution_major_version == '7'
   notify:
-    - restart nginx
+    - restarted nginx on centos
+
+- name: delete conf
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items:
+  - "{{ delete_conf }}"
+  when:
+    delete_conf is defined
+
+- name: copy_conf
+  template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/nginx.conf"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    backup: "yes"
+
+#- name: copy_conf
+#  copy:
+#    src: "{{ item.src }}"
+#    dest: "{{ item.dest }}"
+#    owner: "{{ item.owner }}"
+#    group: "{{ item.group }}"
+#    mode: "{{ item.mode }}"
+#    backup: "{{ item.backup }}"
+#  with_items:
+#    - "{{ copy_conf }}"
+#  when:
+#    copy_conf is defined
+
+- name: create folder_directory
+  file:
+    path:  "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode:  "{{ item.mode }}"
+    state:  "{{ item.state }}"
+  with_items:
+    "{{ folder_directory }}"
+  when:
+    folder_directory is defined
+
+- name: generate SSL_certificate
+  command:
+    openssl req -nodes -new -x509 -keyout {{ nginx_ssl_certificate_key }} -out {{ nginx_ssl_certificate }} -subj "{{ nginx_ssl_certificate_subject }}" -days {{ nginx_ssl_certificate_days }}
+  args:
+    creates: "{{ nginx_ssl_certificate }}"
+
+- name: copy nginx vhost and phpinfo
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+    backup: "{{ item.backup }}"
+  with_items:
+    - "{{ nginx_vhost }}"
+  when:
+    nginx_vhost is defined

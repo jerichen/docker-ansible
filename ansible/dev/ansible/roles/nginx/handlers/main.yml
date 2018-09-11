@@ -1,10 +1,11 @@
-- name: ubuntu restart nginx
+# ubuntu
+- name: restarted nginx
   service:
     name: nginx
     state: restarted
     enabled: yes
 
-- name: ubuntu reload nginx
+- name: reloaded nginx
   service:
     name: nginx
     state: reloaded
@@ -15,9 +16,9 @@
   notify:
     - ubuntu restart nginx
 
-- name: centos restart nginx
-#  systemctl:
-  systemd:
-    name: nginx
+# centos
+- name: restarted nginx on centos
+  service:
+    name: nginx.service
     state: restarted
     enabled: yes
