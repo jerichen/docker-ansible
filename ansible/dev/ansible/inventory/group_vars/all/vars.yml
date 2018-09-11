@@ -5,7 +5,7 @@ ansible_root: "{{ inventory_dir | dirname }}"
 ansible_playbook_root: "{{ ansible_root }}/playbook"
 
 # test debug
-inventory_group_var: "inventory group var"
+inventory_group_var: "inventory group var example"
 
 website: "local-example.com.tw"
 php_71_fpm: "php7.1-fpm"
