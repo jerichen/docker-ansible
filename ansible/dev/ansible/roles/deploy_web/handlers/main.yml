@@ -1,0 +1,11 @@
+- name: restarted nginx on ubuntu
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes
+
+- name: restarted nginx on centos
+  service:
+    name: nginx.service
+    state: restarted
+    enabled: yes

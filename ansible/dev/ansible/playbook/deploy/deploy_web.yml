@@ -5,9 +5,10 @@
 - import_playbook: mysql/playbook.yml
 - import_playbook: redis/playbook.yml
 
-#- import_playbook: example/playbook.yml
-
-# TODO gitlab、jenkins、ELK(Elasticsearch、Logstash、Kibana)
-
-
-
+- hosts: '{{ hosts_name }}'
+  user: master
+  become: True
+  become_user: root
+  become_method: sudo
+  roles:
+    - role: deploy_web
