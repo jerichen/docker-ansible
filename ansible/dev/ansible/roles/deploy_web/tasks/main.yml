@@ -2,46 +2,46 @@
 - debug: var=website
 
 # create new laravel website
-- name: check website not install
-  stat:
-    path: "/var/www/html/{{ website }}"
-  register: laravel_path
-
-- name: composer create-project laravel
-  composer:
-    command: create-project
-    arguments: '--prefer-dist laravel/laravel {{ website }}'
-    working_dir: /var/www/html
-    prefer_dist: yes
-  when: laravel_path.stat.exists == False
-
-- name: create sites-enabled config file
-  template:
-    src: 'templates/{{ php_version }}.conf.j2'
-    dest: "/etc/nginx/sites-enabled/{{ website }}.conf"
-
-- name: Change Storage Permission
-  file:
-    path: "/var/www/html/{{ website }}/storage/"
-    mode: 0777
-    recurse: yes
-
-- name: trigger nginx restart on Ubuntu
-  debug:
-    msg: "trigger nginx restart on Ubuntu"
-  when:
-    ansible_distribution == 'Ubuntu'
-  notify:
-    - restarted nginx on ubuntu
-  changed_when: true
-
-- name: trigger nginx restart on CentOS
-  debug:
-    msg: "trigger nginx restart on CentOS"
-  when:
-    ansible_distribution == 'CentOS' and
-    ansible_distribution_major_version == '7'
-  notify:
-    - restarted nginx on centos
-  changed_when: true
+#- name: check website not install
+#  stat:
+#    path: "/var/www/html/{{ website }}"
+#  register: laravel_path
+#
+#- name: composer create-project laravel
+#  composer:
+#    command: create-project
+#    arguments: '--prefer-dist laravel/laravel {{ website }}'
+#    working_dir: /var/www/html
+#    prefer_dist: yes
+#  when: laravel_path.stat.exists == False
+#
+#- name: create sites-enabled config file
+#  template:
+#    src: 'templates/{{ php_version }}.conf.j2'
+#    dest: "/etc/nginx/sites-enabled/{{ website }}.conf"
+#
+#- name: Change Storage Permission
+#  file:
+#    path: "/var/www/html/{{ website }}/storage/"
+#    mode: 0777
+#    recurse: yes
+#
+#- name: trigger nginx restart on Ubuntu
+#  debug:
+#    msg: "trigger nginx restart on Ubuntu"
+#  when:
+#    ansible_distribution == 'Ubuntu'
+#  notify:
+#    - restarted nginx on ubuntu
+#  changed_when: true
+#
+#- name: trigger nginx restart on CentOS
+#  debug:
+#    msg: "trigger nginx restart on CentOS"
+#  when:
+#    ansible_distribution == 'CentOS' and
+#    ansible_distribution_major_version == '7'
+#  notify:
+#    - restarted nginx on centos
+#  changed_when: true
 

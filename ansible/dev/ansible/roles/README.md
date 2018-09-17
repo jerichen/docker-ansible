@@ -31,5 +31,5 @@ ansible-playbook ~/dev/ansible/playbook/example/playbook.yml
 
 ### run ansible add var 
 ansible-playbook --extra-vars "hosts_name=dev" playbook/example/playbook.yml
-ansible-playbook --extra-vars "hosts_name=dev web_site=blog" playbook/example/playbook.yml
-ansible-playbook --e hosts_name=dev playbook/example/playbook.yml
+ansible-playbook --extra-vars "hosts_name=dev website=blog" playbook/example/playbook.yml
+ansible-playbook --e "hosts_name=dev website=blog" playbook/example/playbook.yml
