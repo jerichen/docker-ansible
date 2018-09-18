@@ -1,16 +1,16 @@
 # Linux + Nginx + MySQL + PHP7.1
-- import_playbook: ../git/playbook.yml
-- import_playbook: ../php7/playbook.yml
+#- import_playbook: ../git/playbook.yml
+#- import_playbook: ../php7/playbook.yml
 #- import_playbook: ../composer/playbook.yml
 #- import_playbook: ../nginx/playbook.yml
 #- import_playbook: ../mysql/playbook.yml
 #- import_playbook: ../redis/playbook.yml
 
 # Create New WebSite
-#- hosts: '{{ hosts_name }}'
-#  user: master
-#  become: True
-#  become_user: root
-#  become_method: sudo
-#  roles:
-#    - role: deploy_web
+- hosts: '{{ hosts_name }}'
+  user: master
+  become: True
+  become_user: root
+  become_method: sudo
+  roles:
+    - role: deploy_web
