@@ -32,18 +32,21 @@ folder_directory:
 
 # nginx_vhost
 nginx_vhost:
-  - src: "~/dev/ansible/roles/nginx/files/local-php71.com.tw.conf"
+  - src: 'templates/php7.1.conf.j2'
     dest: "/etc/nginx/sites-enabled/local-php71.com.tw.conf"
     owner: "root"
     group: "root"
     mode: "0755"
     backup: "yes"
-  - src: "~/dev/ansible/roles/nginx/files/local-php56.com.tw.conf"
+  - src: 'templates/php5.6.conf.j2'
     dest: "/etc/nginx/sites-enabled/local-php56.com.tw.conf"
     owner: "root"
     group: "root"
     mode: "0755"
     backup: "yes"
+
+# index.php
+index_php:
   - src: "~/dev/ansible/roles/nginx/files/index.php"
     dest: "/var/www/html/default/public/index.php"
     owner: "root"

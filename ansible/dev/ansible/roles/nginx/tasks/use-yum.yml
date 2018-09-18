@@ -33,19 +33,6 @@
     mode: "0755"
     backup: "yes"
 
-#- name: copy_conf
-#  copy:
-#    src: "{{ item.src }}"
-#    dest: "{{ item.dest }}"
-#    owner: "{{ item.owner }}"
-#    group: "{{ item.group }}"
-#    mode: "{{ item.mode }}"
-#    backup: "{{ item.backup }}"
-#  with_items:
-#    - "{{ copy_conf }}"
-#  when:
-#    copy_conf is defined
-
 - name: create folder_directory
   file:
     path:  "{{ item.path }}"
@@ -64,8 +51,8 @@
   args:
     creates: "{{ nginx_ssl_certificate }}"
 
-- name: copy nginx vhost and phpinfo
-  copy:
+- name: copy nginx vhost
+  template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ item.owner }}"
@@ -76,3 +63,16 @@
     - "{{ nginx_vhost }}"
   when:
     nginx_vhost is defined
+
+- name: copy index_php
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+    backup: "{{ item.backup }}"
+  with_items:
+    - "{{ index_php }}"
+  when:
+    index_php is defined
