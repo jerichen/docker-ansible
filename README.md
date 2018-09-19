@@ -1,5 +1,3 @@
-## 未完成
-
 ### 用docker composer 練習 ansible
 
 ### Control-Node-Ubuntu 
@@ -10,6 +8,7 @@
 - ubuntu 18.04
     - ssh username: master
     - ssh password: password
+    
 ### Managed-Node-Centos
 - centos 7
     - ssh username: master
