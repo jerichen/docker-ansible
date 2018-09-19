@@ -7,6 +7,7 @@ ENV TZ=Asia/Taipei
 RUN apt-get update
 
 # Install the requires package.
+RUN apt-get install -y tzdata
 RUN apt-get install -y vim
 RUN apt-get install -y net-tools
 RUN apt-get install -y openssh-server

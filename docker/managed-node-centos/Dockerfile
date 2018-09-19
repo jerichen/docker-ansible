@@ -7,6 +7,7 @@ ENV TZ=Asia/Taipei
 RUN yum update -y
 
 # Install the requires package.
+RUN yum install -y tzdata
 RUN yum install -y vim
 RUN yum install -y net-tools
 RUN yum install -y openssh-server
