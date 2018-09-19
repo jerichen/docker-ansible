@@ -10,10 +10,13 @@ RUN apt-get install -y software-properties-common
 RUN apt-add-repository ppa:ansible/ansible
 RUN apt-get update
 RUN apt-get install -y ansible
-
 RUN apt-get install -y openssh-server 
 RUN apt-get install -y python sudo curl wget bash-completion openssl 
 RUN apt-get clean
+
+# Setting timezone
+RUN echo "Asia/Taipei" > /etc/timezone
+RUN dpkg-reconfigure -f noninteractive tzdata
 
 # Setting the sshd.
 RUN mkdir /var/run/sshd
