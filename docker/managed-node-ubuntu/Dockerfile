@@ -19,6 +19,11 @@ RUN apt-get install -y bash-completion
 RUN apt-get install -y openssl
 RUN apt-get clean
 
+# Setting timezone
+#RUN cp /usr/share/zoneinfo/Asia/Taipei /etc/localtime;
+RUN echo "Asia/Taipei" > /etc/timezone
+RUN dpkg-reconfigure -f noninteractive tzdata
+
 # Setting the sshd.
 RUN mkdir /var/run/sshd
 RUN echo 'root:password' | chpasswd

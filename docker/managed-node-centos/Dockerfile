@@ -20,6 +20,11 @@ RUN yum install -y bash-completion
 RUN yum install -y openssl
 RUN yum clean all
 
+# Setting timezone
+#RUN cp /usr/share/zoneinfo/Asia/Taipei /etc/localtime;
+RUN echo "Asia/Taipei" > /etc/timezone
+RUN dpkg-reconfigure -f noninteractive tzdata
+
 # Setting the sshd.
 RUN mkdir /var/run/sshd
 RUN echo 'root:password' | chpasswd

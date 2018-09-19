@@ -5,3 +5,4 @@
 .idea/
 /docker/.env
 /docker/log/
+/docker/mount/

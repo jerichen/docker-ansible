@@ -45,4 +45,4 @@ services:
           - "${MANAGED_NODE_CENTOS_MYSQL_PORT}:3306"
           - "${MANAGED_NODE_CENTOS_REDIS_PORT}:6379"
       container_name: web02
-      privileged: true
+      privileged: true  # 如果要存取 container 中的系統資料夾，需要加這個參數提升權限。
