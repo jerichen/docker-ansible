@@ -1,0 +1,25 @@
+# ubuntu
+- name: restarted elasticsearch on ubuntu
+  service:
+    name: elasticsearch
+    state: restarted
+    enabled: yes
+
+- name: reloaded elasticsearch
+  service:
+    name: elasticsearch
+    state: reloaded
+    enabled: yes
+
+- name: started elasticsearch
+  service:
+    name: elasticsearch
+    state: started
+    enabled: yes
+
+# centos
+- name: restarted elasticsearch on centos
+  service:
+    name: elasticsearch
+    state: restarted
+    enabled: yes

@@ -1,0 +1,15 @@
+- name: set variables
+  set_fact:
+    roles_name: "{{ role_path|basename }}"
+
+- name: Ubuntu install git
+  apt:
+    name: git
+  when: ansible_distribution == 'Ubuntu'
+
+- name: CentOS install git
+  yum:
+    name: git
+  when:
+    ansible_distribution == 'CentOS' and
+    ansible_distribution_major_version == '7'

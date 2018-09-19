@@ -1,0 +1,17 @@
+# ubuntu
+ubuntu_java_ppa_repo: "ppa:webupd8team/java"
+
+system_path: "/opt"
+elasticsearch_version: "6.4.1"
+elasticsearch_download_source: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{{ elasticsearch_version }}.tar.gz"
+elasticsearch_download_destination: "{{ system_path }}/elasticsearch-{{ elasticsearch_version }}.tar.gz"
+
+apt_java_packages:
+  - "oracle-java8-installer"
+  - "ca-certificates"
+
+# centos 7
+
+
+
+
