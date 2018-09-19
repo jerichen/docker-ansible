@@ -21,6 +21,8 @@ services:
           jerichen/managed-node-ubuntu:latest
       volumes:
           - ${MANAGED_NODE_UBUNTU_LOG_PATH}:/var/log
+          - ${MANAGED_NODE_UBUNTU_NGINX_HTML_PATH}:/var/www/html
+          - ${MANAGED_NODE_UBUNTU_NGINX_CONF_PATH}:/etc/nginx/sites-enabled
       ports:
           - "${MANAGED_NODE_UBUNTU_SSH_PORT}:22"
           - "${MANAGED_NODE_UBUNTU_HTTP_PORT}:80"
@@ -38,6 +40,8 @@ services:
           jerichen/managed-node-centos:latest
       volumes:
           - ${MANAGED_NODE_CENTOS_LOG_PATH}:/var/log
+          - ${MANAGED_NODE_CENTOS_NGINX_HTML_PATH}:/var/www/html
+          - ${MANAGED_NODE_CENTOS_NGINX_CONF_PATH}:/etc/nginx/sites-enabled
       ports:
           - "${MANAGED_NODE_CENTOS_SSH_PORT}:22"
           - "${MANAGED_NODE_CENTOS_HTTP_PORT}:80"
