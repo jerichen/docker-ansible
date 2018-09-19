@@ -4,19 +4,21 @@ services:
 
 ### ubuntu Control Container ##################################
 
-    control:
-      image:
-          jerichen/control-node-ubuntu:latest
-      volumes:
-          - ${CONTROL_NODE_UBUNTU_LOG_PATH}:/var/log
-          - ${CONTROL_DEV_PATH}:/root/dev
-      ports:
-          - "${CONTROL_NODE_UBUNTU_SSH_PORT}:22"
-      container_name: client
+#    control:
+#      image:
+#          jerichen/control-node-ubuntu:latest
+#      volumes:
+#          - ${CONTROL_NODE_UBUNTU_LOG_PATH}:/var/log
+#          - ${CONTROL_DEV_PATH}:/root/dev
+#      ports:
+#          - "${CONTROL_NODE_UBUNTU_SSH_PORT}:22"
+#      container_name: client
 
 ### ubuntu Managed Container ##################################
 
     ubuntu:
+#      build:
+#        context: ./managed-node-ubuntu
       image:
           jerichen/managed-node-ubuntu:latest
       volumes:

@@ -7,7 +7,6 @@ ENV TZ=Asia/Taipei
 RUN yum update -y
 
 # Install the requires package.
-RUN yum install -y tzdata
 RUN yum install -y vim
 RUN yum install -y net-tools
 RUN yum install -y openssh-server
@@ -22,9 +21,7 @@ RUN yum install -y openssl
 RUN yum clean all
 
 # Setting timezone
-#RUN cp /usr/share/zoneinfo/Asia/Taipei /etc/localtime;
-RUN echo "Asia/Taipei" > /etc/timezone
-RUN dpkg-reconfigure -f noninteractive tzdata
+RUN cp /usr/share/zoneinfo/Asia/Taipei /etc/localtime;
 
 # Setting the sshd.
 RUN mkdir /var/run/sshd

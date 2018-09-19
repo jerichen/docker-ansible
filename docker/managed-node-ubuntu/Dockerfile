@@ -11,7 +11,7 @@ RUN apt-get install -y tzdata
 RUN apt-get install -y vim
 RUN apt-get install -y net-tools
 RUN apt-get install -y openssh-server
-RUN apt-get install -y openssh-clients
+RUN apt-get install -y openssh-client
 RUN apt-get install -y python
 RUN apt-get install -y sudo
 RUN apt-get install -y curl
@@ -21,7 +21,6 @@ RUN apt-get install -y openssl
 RUN apt-get clean
 
 # Setting timezone
-#RUN cp /usr/share/zoneinfo/Asia/Taipei /etc/localtime;
 RUN echo "Asia/Taipei" > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
