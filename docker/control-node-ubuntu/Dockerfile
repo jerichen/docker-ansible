@@ -5,6 +5,7 @@ ENV TZ=Asia/Taipei
 
 # install ansible
 RUN apt-get update
+RUN apt-get install -y tzdata
 RUN apt-get install -y vim
 RUN apt-get install -y software-properties-common
 RUN apt-add-repository ppa:ansible/ansible
