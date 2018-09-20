@@ -20,6 +20,6 @@
 # centos
 - name: restarted elasticsearch on centos
   service:
-    name: elasticsearch
+    name: elasticsearch.service
     state: restarted
     enabled: yes
