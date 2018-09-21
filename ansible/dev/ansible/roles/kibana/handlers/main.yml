@@ -1,0 +1,25 @@
+# ubuntu
+- name: restarted kibana on ubuntu
+  service:
+    name: kibana
+    state: restarted
+    enabled: yes
+
+- name: reloaded kibana
+  service:
+    name: kibana
+    state: reloaded
+    enabled: yes
+
+- name: started kibana
+  service:
+    name: kibana
+    state: started
+    enabled: yes
+
+# centos
+- name: restarted kibana on centos
+  service:
+    name: kibana.service
+    state: restarted
+    enabled: yes
