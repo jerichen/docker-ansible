@@ -46,11 +46,20 @@
 - name: create an init.d Logstash
   command: /usr/share/logstash/bin/system-install /etc/logstash/startup.options sysv
 
-- name: trigger logstash restart on Ubuntu
-  debug:
-    msg: "trigger logstash restart on Ubuntu"
-  when:
-    ansible_distribution == 'Ubuntu'
+- name: Change kibana.yml
+  template:
+    src: "logstash.yml.j2"
+    dest: "/etc/logstash/logstash.yml"
+    owner: root
+    mode: 0644
   notify:
     - restarted logstash on ubuntu
-  changed_when: true
+
+#- name: trigger logstash restart on Ubuntu
+#  debug:
+#    msg: "trigger logstash restart on Ubuntu"
+#  when:
+#    ansible_distribution == 'Ubuntu'
+#  notify:
+#    - restarted logstash on ubuntu
+#  changed_when: true

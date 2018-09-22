@@ -1,0 +1,19 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+# 數據存儲路徑
+path.data: /var/lib/logstash
+
+# 每次input數量
+pipeline.batch.size: 4000
+
+# 配置config
+path.config: /etc/logstash/config/conf.d
+
+# 主機ip
+http.host: "127.0.0.1"
+
+# 設定port
+http.port: 5000-9700
+
+# 輸出級別和路徑，如果config.debug開啟，就要設置debug
+log.level: info
+path.logs: /var/log/logstash
