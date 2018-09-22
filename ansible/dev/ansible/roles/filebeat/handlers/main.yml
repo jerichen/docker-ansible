@@ -1,0 +1,25 @@
+# ubuntu
+- name: restarted filebeat on ubuntu
+  service:
+    name: filebeat
+    state: restarted
+    enabled: yes
+
+- name: reloaded filebeat
+  service:
+    name: filebeat
+    state: reloaded
+    enabled: yes
+
+- name: started filebeat
+  service:
+    name: filebeat
+    state: started
+    enabled: yes
+
+# centos
+- name: restarted filebeat on centos
+  service:
+    name: filebeat.service
+    state: restarted
+    enabled: yes

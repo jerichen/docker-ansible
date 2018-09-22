@@ -1,0 +1,32 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+input {
+    beats {
+        port => 5044
+    }
+}
+
+output {
+
+    if [fields][logtype] == "laravel"{
+        elasticsearch {
+            hosts => ["http://localhost:9200"]
+            index => "%{[@metadata][beat]}-%{[@metadata][version]}-laravel-%{+YYYY.MM.dd}"
+        }
+    }
+
+    if [fields][logtype] == "log"{
+        elasticsearch {
+            hosts => ["http://localhost:9200"]
+            index => "%{[@metadata][beat]}-%{[@metadata][version]}-log-%{+YYYY.MM.dd}"
+        }
+    }
+}
+
+#output {
+    #elasticsearch {
+        #hosts => ["http://localhost:9200"]
+        #index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
+        #user => "elastic"
+        #password => "changeme"
+    #}
+#}
