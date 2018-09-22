@@ -19,3 +19,12 @@
     state: present
   notify:
     - restarted kibana on centos
+
+- name: Change kibana.yml
+  template:
+    src: "kibana.yml.j2"
+    dest: "/etc/kibana/kibana.yml"
+    owner: root
+    mode: 0644
+  notify:
+    - restarted kibana on centos

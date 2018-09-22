@@ -11,4 +11,4 @@ apt_java_packages:
 
 es_major_version: "6.x"
 
-kibana_website: "local-kibana.com.tw"
+kibana_website: "elk-stack.com.tw"

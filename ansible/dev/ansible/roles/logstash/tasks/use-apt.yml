@@ -42,5 +42,15 @@
   apt:
     name: logstash
     state: present
+
+- name: create an init.d Logstash
+  command: /usr/share/logstash/bin/system-install /etc/logstash/startup.options sysv
+
+- name: trigger logstash restart on Ubuntu
+  debug:
+    msg: "trigger logstash restart on Ubuntu"
+  when:
+    ansible_distribution == 'Ubuntu'
   notify:
     - restarted logstash on ubuntu
+  changed_when: true

@@ -19,3 +19,12 @@
     state: present
   notify:
     - restarted elasticsearch on centos
+
+- name: Change elasticsearch.yml
+  template:
+    src: "elasticsearch.yml.j2"
+    dest: "/etc/elasticsearch/elasticsearch.yml"
+    owner: root
+    mode: 0600
+  notify:
+    - restarted elasticsearch on centos
