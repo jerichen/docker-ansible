@@ -95,9 +95,9 @@
     owner: "{{ item.name }}"
     mode: 0600
   with_items:
-  - "{{ mysql_users }}"
+    - "{{ mysql_users }}"
   notify:
-  - restarted MySQL
+    - restarted MySQL
 
 - name: remove the test database
   mysql_db:
@@ -109,7 +109,7 @@
     name: "{{ item.name }}"
     state: present
   with_items:
-  - "{{ mysql_database }}"
+    - "{{ mysql_database }}"
   when:
     mysql_database|lower() != 'none'
 
@@ -135,7 +135,7 @@
     state: present
     host: "{{ item.host|default('localhost') }}"
   with_items:
-  - "{{ mysql_repl_users }}"
+    - "{{ mysql_repl_users }}"
   when:
     mysql_repl_role == 'master'
   notify:

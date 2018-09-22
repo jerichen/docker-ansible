@@ -38,18 +38,9 @@
     repo: 'deb https://artifacts.elastic.co/packages/6.x/apt stable main'
     state: present
 
-- name: Install Elasticsearch
+- name: Install Logstash
   apt:
-    name: elasticsearch
+    name: logstash
     state: present
   notify:
-    - restarted elasticsearch on ubuntu
-
-- name: Add elasticsearch.yml
-  template:
-    src: "elasticsearch.yml.j2"
-    dest: "/etc/elasticsearc/elasticsearch.yml"
-    owner: root
-    mode: 0600
-  notify:
-    - restarted elasticsearch on ubuntu
+    - restarted logstash on ubuntu

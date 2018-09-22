@@ -1,0 +1,25 @@
+# ubuntu
+- name: restarted logstash on ubuntu
+  service:
+    name: logstash
+    state: restarted
+    enabled: yes
+
+- name: reloaded logstash
+  service:
+    name: logstash
+    state: reloaded
+    enabled: yes
+
+- name: started logstash
+  service:
+    name: logstash
+    state: started
+    enabled: yes
+
+# centos
+- name: restarted logstash on centos
+  service:
+    name: logstash.service
+    state: restarted
+    enabled: yes

@@ -13,9 +13,9 @@
     src: elasticsearch.repo
     dest: /etc/yum.repos.d/elasticsearch-6.x.repo
 
-- name: Install Kibana
+- name: Install Logstash
   yum:
-    name: kibana
+    name: logstash
     state: present
   notify:
-    - restarted kibana on centos
+    - restarted logstash on centos
