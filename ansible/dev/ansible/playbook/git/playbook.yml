@@ -1,4 +1,4 @@
-- hosts: dev
+- hosts: '{{ hosts_name }}'
   user: master
   become: True
   become_user: root
