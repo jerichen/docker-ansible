@@ -20,14 +20,27 @@ filebeat.inputs:
 # Below are the input specific configurations.
 
 - type: log
-
-    # Change to true to enable this input configuration.
-  enabled: false
-
-    # Paths that should be crawled and fetched. Glob based paths.
+  enabled: true
   paths:
-  - /var/log/*.log
-  #- c:\programdata\elasticsearch\logs\*
+    - /var/log/nginx/*.log
+#    - /var/log/*.log
+  tags: ['nginx']
+  document_type: nginx
+  reload.enabled: true
+  reload.period: 30s
+
+- type: log
+  enabled: true
+  paths:
+    - /var/www/html/local-example.com.tw/storage/logs/laravel-*.log
+  tags: ['laravel']
+  document_type: laravel
+  reload.enabled: true
+  reload.period: 30s
+  multiline.pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}'
+  multiline.negate: true
+  multiline.match: after
+  multiline.timeout: 2s
 
     # Exclude lines. A list of regular expressions to match. It drops the lines that are
     # matching any regular expression from the list.
@@ -152,8 +165,8 @@ setup.kibana:
 
 #----------------------------- Logstash output --------------------------------
 output.logstash:
-# The Logstash hosts
-hosts: ["localhost:5044"]
+    # The Logstash hosts
+    hosts: ["localhost:5044"]
 
 # Optional SSL. By default is off.
 # List of root certificates for HTTPS server verifications

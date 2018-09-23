@@ -1,0 +1,22 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+input {
+    file {
+        path => '/var/www/html/local-example.com.tw/storage/logs/laravel-*.log'
+        start_position => 'beginning'
+        ignore_older => 0
+    }
+}
+filter {
+    grok {
+        match => { "message" => "\[%{TIMESTAMP_ISO8601:timestamp}\] %{DATA:env}\.%{DATA:severity}: %{DATA:message} " }
+    }
+}
+output {
+    elasticsearch {
+        hosts => ["http://localhost:9200"]
+        index => "laravel-%{+YYYY-MM-dd}"
+    }
+    stdout {
+        codec => rubydebug
+    }
+}

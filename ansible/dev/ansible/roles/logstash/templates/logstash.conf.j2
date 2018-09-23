@@ -6,36 +6,17 @@ input {
 }
 
 output {
+    if [type] == "nginx" {
+        elasticsearch {
+            hosts => ["http://localhost:9200"]
+            index => "nginx-%{[beat.version]}-%{+YYYY.MM.dd}"
+        }
+    }
 
-    if [fields][logtype] == "laravel"{
+    if [type] == "laravel" {
         elasticsearch {
             hosts => ["http://localhost:9200"]
             index => "%{[@metadata][beat]}-%{[@metadata][version]}-laravel-%{+YYYY.MM.dd}"
         }
     }
-
-    if [fields][logtype] == "log"{
-        elasticsearch {
-            hosts => ["http://localhost:9200"]
-            index => "%{[@metadata][beat]}-%{[@metadata][version]}-log-%{+YYYY.MM.dd}"
-        }
-    }
 }
-
-# Sample Logstash configuration for creating a simple
-# Beats -> Logstash -> Elasticsearch pipeline.
-
-#input {
-#beats {
-#port => 5044
-#}
-#}
-#
-#output {
-#elasticsearch {
-#hosts => ["http://localhost:9200"]
-#index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
-#    #user => "elastic"
-#    #password => "changeme"
-#}
-#}
