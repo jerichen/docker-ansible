@@ -40,7 +40,7 @@ filebeat.inputs:
   multiline.pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}'
   multiline.negate: true
   multiline.match: after
-  multiline.timeout: 2s
+  multiline.timeout: 30s
 
     # Exclude lines. A list of regular expressions to match. It drops the lines that are
     # matching any regular expression from the list.
