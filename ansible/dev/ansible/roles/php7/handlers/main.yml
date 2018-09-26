@@ -20,6 +20,6 @@
 # centos
 - name: restarted php7.1-fpm on centos
   service:
-    name: php-fpm
+    name: php-fpm.service
     state: restarted
     enabled: yes
