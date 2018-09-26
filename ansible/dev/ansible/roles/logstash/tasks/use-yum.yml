@@ -17,5 +17,27 @@
   yum:
     name: logstash
     state: present
+
+- name: Change logstash.yml
+  template:
+    src: "logstash.yml.j2"
+    dest: "/etc/logstash/logstash.yml"
+    owner: root
+    mode: 0644
+
+- name: Add laravel-logstash.conf
+  template:
+    src: "laravel-logstash.conf.j2"
+    dest: "/etc/logstash/conf.d/laravel-logstash.conf"
+    owner: root
+    mode: 0644
+
+- name: trigger logstash restart on CentOS
+  debug:
+    msg: "trigger logstash restart on CentOS"
+  when:
+    ansible_distribution == 'CentOS' and
+    ansible_distribution_major_version == '7'
   notify:
     - restarted logstash on centos
+  changed_when: true
