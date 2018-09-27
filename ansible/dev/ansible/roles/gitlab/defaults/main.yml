@@ -1,0 +1,15 @@
+---
+gitlab_apt_package: "gitlab-ce"
+
+apt_packages:
+  - "curl"
+  - "openssh-server"
+  - "ca-certificates"
+  - "postfix"
+
+gitlab_yum_package: gitlab-ce
+
+
+
+
+

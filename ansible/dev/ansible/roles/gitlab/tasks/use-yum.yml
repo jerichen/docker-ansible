@@ -1,0 +1,28 @@
+- name: Install Java8 packages
+  yum:
+    name: java-1.8.0-openjdk.x86_64
+    state: present
+
+- name: Add Elasticsearch apt key
+  rpm_key:
+    key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Add Elasticsearch repository
+  template:
+    src: elasticsearch.repo
+    dest: /etc/yum.repos.d/elasticsearch-6.x.repo
+
+- name: Install Elasticsearch
+  yum:
+    name: elasticsearch
+    state: present
+
+- name: Change elasticsearch.yml
+  template:
+    src: "elasticsearch.yml.j2"
+    dest: "/etc/elasticsearch/elasticsearch.yml"
+    owner: root
+    mode: 0660
+  notify:
+    - restarted elasticsearch on centos

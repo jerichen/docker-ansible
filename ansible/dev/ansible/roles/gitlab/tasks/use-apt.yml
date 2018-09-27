@@ -1,0 +1,20 @@
+- name: Update and upgrade apt packages
+  apt:
+    force_apt_get: yes
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 86400
+
+- name: Install apt packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_nested:
+    "{{ apt_packages }}"
+  when:
+    apt_packages is defined
+
+- name: Add GitLab repository
+  apt_repository:
+    repo: 'https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh | sudo bash'
+    state: present
