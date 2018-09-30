@@ -1,25 +1,20 @@
-# ubuntu
-- name: restarted elasticsearch on ubuntu
-  service:
-    name: elasticsearch
-    state: restarted
-    enabled: yes
+---
+- name: reconfigure gitlab
+  command: gitlab-ctl reconfigure
 
-- name: reloaded elasticsearch
-  service:
-    name: elasticsearch
-    state: reloaded
-    enabled: yes
+- name: restart gitlab
+  shell: 'sleep 20 && gitlab-ctl restart'
 
-- name: started elasticsearch
-  service:
-    name: elasticsearch
-    state: started
-    enabled: yes
+- name: upgrade gitlab
+  command: gitlab-ctl upgrade
 
-# centos
-- name: restarted elasticsearch on centos
-  service:
-    name: elasticsearch.service
-    state: restarted
-    enabled: yes
+- name: restart gitlab nginx
+  command: gitlab-ctl restart nginx
+
+- name: start gitlab
+  command: gitlab-ctl start
+
+- name: wait for unicorn
+  wait_for:
+    port: 8080
+

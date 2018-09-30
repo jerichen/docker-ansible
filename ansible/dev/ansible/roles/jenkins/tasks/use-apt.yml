@@ -1,0 +1,70 @@
+- name: Check jenkins is not install
+  stat:
+    path: /usr/share/jenkins/jenkins.war
+  register: jenkins_war
+
+- name: Install software-properties-common
+  apt:
+    name: software-properties-common
+    state: latest
+
+- name: Add repository for Ubuntu
+  apt_repository:
+    repo: "{{ ubuntu_java_ppa_repo }}"
+  when:
+    ansible_distribution|lower == "ubuntu"
+
+- name: Update and upgrade apt packages
+  apt:
+    force_apt_get: yes
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 86400
+
+- name: auto accept oracle jdk license
+  shell: echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+
+- name: Install Java8 packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_nested:
+    "{{ apt_java_packages }}"
+  when:
+    apt_java_packages is defined
+
+- name: Import jenkins apt key
+  apt_key:
+    state: present
+    key: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+
+- name: Add jenkins repository
+  apt_repository:
+    repo: 'deb https://pkg.jenkins.io/debian-stable binary/'
+    state: present
+
+- name: Install jenkins
+  apt:
+    name: jenkins
+    state: present
+#  notify:
+#    - started jenkins on ubuntu
+  when: jenkins_war.stat.exists == False
+- name: install plugins
+    include: install_plugins.yml
+
+- name: Change jenkins port
+  replace:
+    path: '/etc/default/jenkins'
+    regexp: 'HTTP_PORT=8080'
+    replace: 'HTTP_PORT=9080'
+    backup: yes
+
+- name: Get init password jenkin
+  shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+  changed_when: false
+  register: result
+
+- name: Output init password jenkins
+  debug:
+    var: result.stdout

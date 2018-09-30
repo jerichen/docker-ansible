@@ -5,7 +5,11 @@ apt_packages:
   - "curl"
   - "openssh-server"
   - "ca-certificates"
-  - "postfix"
+#  - "postfix"
+
+gitlab_apt_repos:
+  - 'deb https://packages.gitlab.com/gitlab/gitlab-ee/ubuntu/ trusty main'
+  - 'deb-src https://packages.gitlab.com/gitlab/gitlab-ee/ubuntu/ trusty main'
 
 gitlab_yum_package: gitlab-ce
 

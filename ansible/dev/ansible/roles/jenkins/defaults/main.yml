@@ -1,0 +1,11 @@
+ubuntu_java_ppa_repo: "ppa:webupd8team/java"
+
+apt_java_packages:
+  - "oracle-java8-installer"
+  - "ca-certificates"
+  - "oracle-java8-set-default"
+
+
+
+
+

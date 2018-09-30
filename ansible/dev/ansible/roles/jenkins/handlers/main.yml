@@ -1,0 +1,19 @@
+# ubuntu
+- name: restarted jenkins on ubuntu
+  service:
+    name: jenkins
+    state: restarted
+    enabled: yes
+
+- name: started jenkins
+  service:
+    name: jenkins
+    state: started
+    enabled: yes
+
+# centos
+- name: restarted jenkins on centos
+  service:
+    name: jenkins.service
+    state: restarted
+    enabled: yes
