@@ -5,7 +5,7 @@
     state: restarted
     enabled: yes
 
-- name: started jenkins
+- name: started jenkins on ubuntu
   service:
     name: jenkins
     state: started

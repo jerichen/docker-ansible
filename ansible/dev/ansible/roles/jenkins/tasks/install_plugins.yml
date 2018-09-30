@@ -1,12 +1,12 @@
 ---
-- name: create plugins directory
+- name: Create plugins directory
   file:
     path: /var/lib/jenkins/plugins/
     state: directory
     owner: jenkins
     group: jenkins
 
-- name: download plugins
+- name: Download plugins
   get_url:
     url: http://updates.jenkins-ci.org/latest/{{ item }}.hpi
     dest: /var/lib/jenkins/plugins/{{ item }}.hpi
