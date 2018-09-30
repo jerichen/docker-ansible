@@ -36,7 +36,7 @@
 - name: Import jenkins apt key
   apt_key:
     state: present
-    key: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+    url: 'https://pkg.jenkins.io/debian-stable/jenkins.io.key'
 
 - name: Add jenkins repository
   apt_repository:
@@ -47,11 +47,12 @@
   apt:
     name: jenkins
     state: present
-#  notify:
-#    - started jenkins on ubuntu
+  notify:
+    - started jenkins on ubuntu
   when: jenkins_war.stat.exists == False
-- name: install plugins
-    include: install_plugins.yml
+
+#- name: install plugins
+#    include: install_plugins.yml
 
 - name: Change jenkins port
   replace:
@@ -59,6 +60,8 @@
     regexp: 'HTTP_PORT=8080'
     replace: 'HTTP_PORT=9080'
     backup: yes
+  notify:
+    - restarted jenkins on ubuntu
 
 - name: Get init password jenkin
   shell: cat /var/lib/jenkins/secrets/initialAdminPassword
