@@ -5,6 +5,85 @@ apt_java_packages:
   - "ca-certificates"
   - "oracle-java8-set-default"
 
+# Certificate subject
+jenkins_ssl_certificate_subject: "/C=US/ST=NY/L=NYC/O=Dis/CN=jenkins"
+
+# Certificate validity (days)
+jenkins_ssl_certificate_days: 365
+
+# Server path to SSL certificate
+jenkins_ssl_certificate: /var/lib/jenkins/ssl/jenkins.crt
+
+# Server path to SSL certificate key
+jenkins_ssl_certificate_key: /var/lib/jenkins/ssl/jenkins.key
+
+jenkins_plugins:
+  - ace-editor
+  - antisamy-markup-formatter
+  - ant
+  - bouncycastle-api
+  - branch-api
+  - build-timeout
+  - cloudbees-folder
+  - credentials
+  - credentials-binding
+  - display-url-api
+  - durable-task
+  - email-ext
+  - external-monitor-job
+  - gradle
+  - handlebars
+  - icon-shim
+  - jquery-detached
+  - junit
+  - ldap
+  - mailer
+  - mapdb-api
+  - matrix-auth
+  - matrix-project
+  - momentjs
+  - pam-auth
+  - pipeline-build-step
+  - pipeline-graph-analysis
+  - pipeline-input-step
+  - pipeline-milestone-step
+  - pipeline-rest-api
+  - pipeline-stage-step
+  - pipeline-stage-view
+  - plain-credentials
+  - resource-disposer
+#  - scm-api
+#  - script-security
+  - ssh-credentials
+  - ssh-slaves
+  - structs
+  - subversion
+  - timestamper
+  - token-macro
+  - windows-slaves
+  - workflow-aggregator
+  - workflow-api
+  - workflow-basic-steps
+  - workflow-cps-global-lib
+  - workflow-cps
+  - workflow-durable-task-step
+  - workflow-job
+  - workflow-multibranch
+  - workflow-scm-step
+  - workflow-step-api
+  - workflow-support
+  - ws-cleanup
+  - plain-credentials
+  - github
+  - git-client
+  - github-api
+  - github-branch-source
+  - github
+  - github-organization-folder
+  - git
+  - git-server
+
+
 
 
 

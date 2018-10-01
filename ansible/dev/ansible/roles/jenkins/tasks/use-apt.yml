@@ -14,13 +14,6 @@
   when:
     ansible_distribution|lower == "ubuntu"
 
-- name: Update and upgrade apt packages
-  apt:
-    force_apt_get: yes
-    upgrade: yes
-    update_cache: yes
-    cache_valid_time: 86400
-
 - name: auto accept oracle jdk license
   shell: echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
 
@@ -33,6 +26,13 @@
   when:
     apt_java_packages is defined
 
+- name: Update and upgrade apt packages
+  apt:
+    force_apt_get: yes
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 86400
+
 - name: Import jenkins apt key
   apt_key:
     state: present
@@ -42,21 +42,40 @@
   apt_repository:
     repo: 'deb https://pkg.jenkins.io/debian-stable binary/'
     state: present
+    update_cache: yes
 
 - name: Install jenkins
   apt:
     name: jenkins
     state: present
+    update_cache: yes
   when: jenkins_war.stat.exists == False
 
-- name: Install plugins
-  include: install_plugins.yml
+- name: Create plugins directory
+  file:
+    path: /var/lib/jenkins/ssl/
+    state: directory
+    owner: jenkins
+    group: jenkins
+
+- name: generate SSL_certificate
+  command:
+    openssl req -nodes -new -x509 -keyout {{ jenkins_ssl_certificate_key }} -out {{ jenkins_ssl_certificate }} -subj "{{ jenkins_ssl_certificate_subject }}" -days {{ jenkins_ssl_certificate_days }}
+  args:
+    creates: "{{ jenkins_ssl_certificate }}"
 
 - name: Change jenkins port
   replace:
     path: '/etc/default/jenkins'
     regexp: 'HTTP_PORT=8080'
-    replace: 'HTTP_PORT=9080'
+    replace: '#HTTP_PORT=8080'
+    backup: yes
+
+- name: Change jenkins https port
+  replace:
+    path: '/etc/default/jenkins'
+    regexp: '^JENKINS_ARGS=""$'
+    replace: 'JENKINS_ARGS="--httpsPrivateKey=/var/lib/jenkins/ssl/jenkins.key --httpsCertificate=/var/lib/jenkins/ssl/jenkins.crt --httpsPort=8443 --httpPort=-1"'
     backup: yes
 
 - name: restarted jenkins on ubuntu
@@ -65,11 +84,22 @@
     state: restarted
     enabled: yes
 
+- name: Wait for Jenkins to restart
+  wait_for:
+    host: localhost
+    port: 8443
+    delay: 20
+    timeout: 300
+
 - name: Get init password jenkin
-  shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+  command: cat /var/lib/jenkins/secrets/initialAdminPassword
   changed_when: false
   register: result
 
 - name: Output init password jenkins
   debug:
     var: result.stdout
+
+#- name: Install plugins
+#  include: install_plugins.yml
+
