@@ -4,18 +4,19 @@ apt_java_packages:
   - "oracle-java8-installer"
   - "ca-certificates"
   - "oracle-java8-set-default"
+  - "openjdk-8-jdk"
 
 # Certificate subject
-jenkins_ssl_certificate_subject: "/C=US/ST=NY/L=NYC/O=Dis/CN=jenkins"
+nginx_ssl_certificate_subject: "/C=US/ST=NY/L=NYC/O=Dis/CN=NGINX"
 
 # Certificate validity (days)
-jenkins_ssl_certificate_days: 365
+nginx_ssl_certificate_days: 365
 
 # Server path to SSL certificate
-jenkins_ssl_certificate: /var/lib/jenkins/ssl/jenkins.crt
+nginx_ssl_certificate: /etc/nginx/ssl/nginx.crt
 
 # Server path to SSL certificate key
-jenkins_ssl_certificate_key: /var/lib/jenkins/ssl/jenkins.key
+nginx_ssl_certificate_key: /etc/nginx/ssl/nginx.key
 
 jenkins_plugins:
   - ace-editor

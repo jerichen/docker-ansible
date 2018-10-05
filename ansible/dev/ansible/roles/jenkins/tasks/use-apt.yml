@@ -51,32 +51,40 @@
     update_cache: yes
   when: jenkins_war.stat.exists == False
 
-- name: Create plugins directory
+- name: Change jenkins config
+  lineinfile:
+    path: '/etc/default/jenkins'
+    regexp: '^JENKINS_ARGS="'
+    line: 'JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT --httpListenAddress=127.0.0.1"'
+    backup: yes
+
+- name: Install nginx
+  apt:
+    name: nginx
+    state: latest
+
+- name: Create nginx ssl directory
   file:
-    path: /var/lib/jenkins/ssl/
+    path: /etc/nginx/ssl
     state: directory
-    owner: jenkins
-    group: jenkins
+    owner: root
+    group: root
+    mode:  0755
 
 - name: generate SSL_certificate
   command:
-    openssl req -nodes -new -x509 -keyout {{ jenkins_ssl_certificate_key }} -out {{ jenkins_ssl_certificate }} -subj "{{ jenkins_ssl_certificate_subject }}" -days {{ jenkins_ssl_certificate_days }}
+    openssl req -nodes -new -x509 -keyout {{ nginx_ssl_certificate_key }} -out {{ nginx_ssl_certificate }} -subj "{{ nginx_ssl_certificate_subject }}" -days {{ nginx_ssl_certificate_days }}
   args:
-    creates: "{{ jenkins_ssl_certificate }}"
+    creates: "{{ nginx_ssl_certificate }}"
 
-- name: Change jenkins port
-  replace:
-    path: '/etc/default/jenkins'
-    regexp: 'HTTP_PORT=8080'
-    replace: '#HTTP_PORT=8080'
-    backup: yes
-
-- name: Change jenkins https port
-  replace:
-    path: '/etc/default/jenkins'
-    regexp: '^JENKINS_ARGS=""$'
-    replace: 'JENKINS_ARGS="--httpsPrivateKey=/var/lib/jenkins/ssl/jenkins.key --httpsCertificate=/var/lib/jenkins/ssl/jenkins.crt --httpsPort=8443 --httpPort=-1"'
-    backup: yes
+- name: copy default
+  template:
+    src: "default.j2"
+    dest: "/etc/nginx/sites-available/default"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    backup: "yes"
 
 - name: restarted jenkins on ubuntu
   service:
@@ -87,9 +95,15 @@
 - name: Wait for Jenkins to restart
   wait_for:
     host: localhost
-    port: 8443
+    port: 8080
     delay: 20
-    timeout: 300
+    timeout: 100
+
+- name: restarted nginx on ubuntu
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes
 
 - name: Get init password jenkin
   command: cat /var/lib/jenkins/secrets/initialAdminPassword
