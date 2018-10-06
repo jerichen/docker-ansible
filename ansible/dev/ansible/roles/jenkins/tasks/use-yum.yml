@@ -1,145 +1,90 @@
----
-# - name: check openjdk is not install
-#   stat:
-#     path: /usr/bin/java
-#   register: openjdk_bin
-
-- name: check jenkins is not install
+- name: Check jenkins is not install
   stat:
     path: /usr/lib/jenkins/jenkins.war
   register: jenkins_war
 
-- name: install required package
+- name: Install Java8 packages
   yum:
-    name={{ item }}
-    state=present
-  with_items:
-    - epel-release
-    - wget
-    - git
-
-- name: install java-1.8.0-openjdk
-  yum:
-    name: java-1.8.0-openjdk
+    name: java-1.8.0-openjdk.x86_64
     state: present
-  # when: openjdk_bin.stat.exists == False
 
-- name: download jenkins.repo
+- name: Add jenkins repository
   get_url:
     url: http://pkg.jenkins-ci.org/redhat/jenkins.repo
     dest: /etc/yum.repos.d/jenkins.repo
     mode: 0644
 
-- name: import jenkins rpm key
+- name: Add jenkins apt key
   rpm_key:
-    state: present
     key: https://jenkins-ci.org/redhat/jenkins-ci.org.key
+    state: present
 
-- name: install jenkins
+- name: Install jenkins
   yum:
     name: jenkins
     state: present
+    update_cache: yes
   when: jenkins_war.stat.exists == False
 
-- name: enable jenins service
-  service:
-    name: jenkins
-    enabled: yes
+#- name: Change jenkins config
+#  lineinfile:
+#    path: '/etc/sysconfig/jenkins'
+#    regexp: '^JENKINS_ARGS=""'
+#    line: 'JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT --httpListenAddress=127.0.0.1"'
+#    backup: yes
 
-- name: create jenkins ssl folder
-  file:
-    path: /var/lib/jenkins/ssl
-    owner: jenkins
-    group: jenkins
-    state: directory
+#- name: Install nginx
+#  yum:
+#    name: nginx
+#    state: latest
+#
+#- name: Create nginx ssl directory
+#  file:
+#    path: /etc/nginx/ssl
+#    state: directory
+#    owner: root
+#    group: root
+#    mode:  0755
+#
+#- name: generate SSL_certificate
+#  command:
+#    openssl req -nodes -new -x509 -keyout {{ nginx_ssl_certificate_key }} -out {{ nginx_ssl_certificate }} -subj "{{ nginx_ssl_certificate_subject }}" -days {{ nginx_ssl_certificate_days }}
+#  args:
+#    creates: "{{ nginx_ssl_certificate }}"
+#
+#- name: copy default
+#  template:
+#    src: "jenkins.conf.j2"
+#    dest: "/etc/nginx/sites-enabled/jenkins.conf"
+#    owner: "root"
+#    group: "root"
+#    mode: "0755"
+#    backup: "yes"
 
-- name: upload jenkins ssl cert
-  copy:
-    src={{ item.src }}
-    dest={{ item.dest }}
-    owner=jenkins
-    group=jenkins
-    mode=0600
-  with_items:
-  - { src: 'jenkins_ssl/server.key', dest: '/var/lib/jenkins/ssl/server.key' }
-  - { src: 'jenkins_ssl/ssl.crt', dest: '/var/lib/jenkins/ssl/ssl.crt' }
-
-- name: backup /etc/sysconfig/jenkins
-  copy:
-    src: /etc/sysconfig/jenkins
-    dest: /etc/sysconfig/jenkins.orig
-    force: no
-    remote_src: True
-
-- name: modify /etc/sysconfig/jenkins
-  replace:
-    dest={{ item.dst }}
-    regexp={{ item.string_orig }}
-    replace={{ item.string_change }}
-  with_items:
-  - { dst: "/etc/sysconfig/jenkins",
-      string_orig: '^JENKINS_ARGS=""$',
-      string_change: 'JENKINS_ARGS="--httpsPrivateKey=/var/lib/jenkins/ssl/server.key --httpsCertificate=/var/lib/jenkins/ssl/ssl.crt --httpsPort=8443 --httpPort=-1"' }
-
-- name: create jenkins .ssh folder
-  file:
-    path: '/var/lib/jenkins/.ssh'
-    owner: 'jenkins'
-    group: 'jenkins'
-    mode: '0700'
-    state: 'directory'
-
-- name: upload jenkins private key for automation
-  copy:
-    src: 'ssh_private_key/id_rsa'
-    dest: '/var/lib/jenkins/.ssh/id_rsa'
-    owner: 'jenkins'
-    group: 'jenkins'
-    mode: '0600'
-
-- name: create jenkins dev folder
-  file:
-    path: '/var/lib/jenkins/dev'
-    owner: 'jenkins'
-    group: 'jenkins'
-    mode: '0755'
-    state: 'directory'
-
-- name: create jenkins dev folder
-  file:
-    path: '/var/lib/jenkins/dev/laravel_env'
-    owner: 'jenkins'
-    group: 'jenkins'
-    mode: '0755'
-    state: 'directory'
-
-- name: create jenkins dev folder
-  file:
-    path: '/var/lib/jenkins/dev/robots'
-    owner: 'jenkins'
-    group: 'jenkins'
-    mode: '0755'
-    state: 'directory'
-
-- name: create /var/lib/jenkins/dev/cp-laravel-env
-  file:
-    path: '/var/lib/jenkins/dev/cp-laravel-env'
-    owner: 'jenkins'
-    group: 'jenkins'
-    mode: '0755'
-    state: 'directory'
-
-# - name: start jenkins service
-#   systemd:
-#     name: jenkins
-#     state: started
-
-# - name: backup original config
-#   copy:
-#     src={{ item.src }}
-#     dest={{ item.dest }}
-#     force=no
-#     remote_src=True
-#   with_items:
-#     - { src: '/var/lib/jenkins/config.xml', dest: '/var/lib/jenkins/config.xml.orig' }
-#     - { src: '/var/lib/jenkins/credentials.xml', dest: '/var/lib/jenkins/credentials.xml.orig' }
+#- name: restarted jenkins on centos7
+#  service:
+#    name: jenkins.service
+#    state: restarted
+#    enabled: yes
+#
+#- name: Wait for Jenkins to restart
+#  wait_for:
+#    host: localhost
+#    port: 8080
+#    delay: 20
+#    timeout: 100
+#
+#- name: restarted nginx on centos7
+#  service:
+#    name: nginx.service
+#    state: restarted
+#    enabled: yes
+#
+#- name: Get init password jenkin
+#  command: cat /var/lib/jenkins/secrets/initialAdminPassword
+#  changed_when: false
+#  register: result
+#
+#- name: Output init password jenkins
+#  debug:
+#    var: result.stdout
