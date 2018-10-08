@@ -1,2 +1,14 @@
 ---
 jenkins_website: "local-jenkins.com.tw"
+
+
+# vars file for jenkins
+
+java:
+  VERSION: "java-1.8.0-openjdk"
+  ALTERNATIVES: "/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.181-3.b13.el7_5.x86_64/jre/bin/java"
+
+jenkins:
+  repo_URL: "http://pkg.jenkins-ci.org/redhat/jenkins.repo"
+  gpg_key: "https://jenkins-ci.org/redhat/jenkins-ci.org.key"
+  JAVA_OPTIONS: "-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false"

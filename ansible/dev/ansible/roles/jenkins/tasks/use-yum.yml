@@ -5,7 +5,7 @@
 
 - name: Install Java8 packages
   yum:
-    name: java-1.8.0-openjdk.x86_64
+    name: java-1.8.0-openjdk
     state: present
 
 - name: Add jenkins repository
@@ -26,65 +26,73 @@
     update_cache: yes
   when: jenkins_war.stat.exists == False
 
-#- name: Change jenkins config
-#  lineinfile:
-#    path: '/etc/sysconfig/jenkins'
-#    regexp: '^JENKINS_ARGS=""'
-#    line: 'JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT --httpListenAddress=127.0.0.1"'
-#    backup: yes
+- name: Change jenkins config
+  lineinfile:
+    path: '/etc/sysconfig/jenkins'
+    regexp: '^JENKINS_ARGS=""'
+    line: 'JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT --httpListenAddress=127.0.0.1"'
+    backup: yes
 
-#- name: Install nginx
-#  yum:
-#    name: nginx
-#    state: latest
-#
-#- name: Create nginx ssl directory
-#  file:
-#    path: /etc/nginx/ssl
-#    state: directory
-#    owner: root
-#    group: root
-#    mode:  0755
-#
-#- name: generate SSL_certificate
-#  command:
-#    openssl req -nodes -new -x509 -keyout {{ nginx_ssl_certificate_key }} -out {{ nginx_ssl_certificate }} -subj "{{ nginx_ssl_certificate_subject }}" -days {{ nginx_ssl_certificate_days }}
-#  args:
-#    creates: "{{ nginx_ssl_certificate }}"
-#
-#- name: copy default
-#  template:
-#    src: "jenkins.conf.j2"
-#    dest: "/etc/nginx/sites-enabled/jenkins.conf"
-#    owner: "root"
-#    group: "root"
-#    mode: "0755"
-#    backup: "yes"
+- name: Install nginx
+  yum:
+    name: nginx
+    state: latest
 
-#- name: restarted jenkins on centos7
-#  service:
-#    name: jenkins.service
-#    state: restarted
-#    enabled: yes
-#
-#- name: Wait for Jenkins to restart
-#  wait_for:
-#    host: localhost
-#    port: 8080
-#    delay: 20
-#    timeout: 100
-#
-#- name: restarted nginx on centos7
-#  service:
-#    name: nginx.service
-#    state: restarted
-#    enabled: yes
-#
-#- name: Get init password jenkin
-#  command: cat /var/lib/jenkins/secrets/initialAdminPassword
-#  changed_when: false
-#  register: result
-#
-#- name: Output init password jenkins
-#  debug:
-#    var: result.stdout
+- name: Create nginx ssl directory
+  file:
+    path: /etc/nginx/ssl
+    state: directory
+    owner: root
+    group: root
+    mode:  0755
+
+- name: generate SSL_certificate
+  command:
+    openssl req -nodes -new -x509 -keyout {{ nginx_ssl_certificate_key }} -out {{ nginx_ssl_certificate }} -subj "{{ nginx_ssl_certificate_subject }}" -days {{ nginx_ssl_certificate_days }}
+  args:
+    creates: "{{ nginx_ssl_certificate }}"
+
+- name: Create sites-enabled directory
+  file:
+    path: /etc/nginx/sites-enabled
+    state: directory
+    owner: root
+    group: root
+    mode:  0755
+
+- name: copy default
+  template:
+    src: "jenkins.conf.j2"
+    dest: "/etc/nginx/sites-enabled/jenkins.conf"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    backup: "yes"
+
+- name: restarted nginx on centos7
+  service:
+    name: nginx.service
+    state: restarted
+    enabled: yes
+
+- name: restarted jenkins on centos7
+  service:
+    name: jenkins.service
+    state: restarted
+    enabled: yes
+
+- name: Wait for Jenkins to restart
+  wait_for:
+    host: localhost
+    port: 80
+    delay: 20
+    timeout: 30
+
+- name: Get init password jenkin
+  command: cat /var/lib/jenkins/secrets/initialAdminPassword
+  changed_when: false
+  register: result
+
+- name: Output init password jenkins
+  debug:
+    var: result.stdout

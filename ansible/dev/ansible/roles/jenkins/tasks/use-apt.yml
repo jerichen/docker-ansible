@@ -77,6 +77,14 @@
   args:
     creates: "{{ nginx_ssl_certificate }}"
 
+- name: Create sites-enabled directory
+  file:
+    path: /etc/nginx/sites-enabled
+    state: directory
+    owner: root
+    group: root
+    mode:  0755
+
 - name: copy default
   template:
     src: "jenkins.conf.j2"
@@ -85,6 +93,12 @@
     group: "root"
     mode: "0755"
     backup: "yes"
+
+- name: restarted nginx on ubuntu
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes
 
 - name: restarted jenkins on ubuntu
   service:
@@ -97,13 +111,7 @@
     host: localhost
     port: 8080
     delay: 20
-    timeout: 100
-
-- name: restarted nginx on ubuntu
-  service:
-    name: nginx
-    state: restarted
-    enabled: yes
+    timeout: 30
 
 - name: Get init password jenkin
   command: cat /var/lib/jenkins/secrets/initialAdminPassword
