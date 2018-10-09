@@ -46,11 +46,26 @@
     group: root
     mode:  0755
 
-- name: generate SSL_certificate
+- name: Create nginx cert directory
+  file:
+    path: /etc/nginx/cert
+    state: directory
+    owner: root
+    group: root
+    mode:  0755
+
+- name: generate SSL_dhparam
   command:
-    openssl req -nodes -new -x509 -keyout {{ nginx_ssl_certificate_key }} -out {{ nginx_ssl_certificate }} -subj "{{ nginx_ssl_certificate_subject }}" -days {{ nginx_ssl_certificate_days }}
+    openssl dhparam -dsaparam -out /etc/nginx/cert/dhparam.pem 4096
   args:
     creates: "{{ nginx_ssl_certificate }}"
+
+- name: generate SSL_certificate
+  command:
+    openssl req -nodes -new -x509 -newkey rsa:4096 -keyout {{ nginx_ssl_certificate_key }} -out {{ nginx_ssl_certificate }} -subj "{{ nginx_ssl_certificate_subject }}" -days {{ nginx_ssl_certificate_days }}
+  args:
+    creates: "{{ nginx_ssl_certificate }}"
+
 
 - name: Create sites-enabled directory
   file:
@@ -60,7 +75,7 @@
     group: root
     mode:  0755
 
-- name: copy default
+- name: copy jenkins.conf
   template:
     src: "jenkins.conf.j2"
     dest: "/etc/nginx/sites-enabled/jenkins.conf"
@@ -84,9 +99,9 @@
 - name: Wait for Jenkins to restart
   wait_for:
     host: localhost
-    port: 80
+    port: 8080
     delay: 20
-    timeout: 30
+    timeout: 100
 
 - name: Get init password jenkin
   command: cat /var/lib/jenkins/secrets/initialAdminPassword

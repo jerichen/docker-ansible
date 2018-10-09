@@ -73,9 +73,23 @@
 
 - name: generate SSL_certificate
   command:
-    openssl req -nodes -new -x509 -keyout {{ nginx_ssl_certificate_key }} -out {{ nginx_ssl_certificate }} -subj "{{ nginx_ssl_certificate_subject }}" -days {{ nginx_ssl_certificate_days }}
+    openssl req -nodes -new -x509 -newkey rsa:2048 -keyout {{ nginx_ssl_certificate_key }} -out {{ nginx_ssl_certificate }} -subj "{{ nginx_ssl_certificate_subject }}" -days {{ nginx_ssl_certificate_days }}
   args:
     creates: "{{ nginx_ssl_certificate }}"
+
+- name: Create nginx cert directory
+  file:
+    path: /etc/nginx/cert
+    state: directory
+    owner: root
+    group: root
+    mode:  0755
+
+- name: generate SSL_dhparam
+  command:
+    openssl dhparam -dsaparam -out /etc/nginx/cert/dhparam.pem 2048
+  args:
+    creates: "{{ nginx_ssl_dhparam_certificate }}"
 
 - name: Create sites-enabled directory
   file:
@@ -85,7 +99,16 @@
     group: root
     mode:  0755
 
-- name: copy default
+- name: copy nginx.conf
+  template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/nginx.conf"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    backup: "yes"
+
+- name: copy jenkins.conf
   template:
     src: "jenkins.conf.j2"
     dest: "/etc/nginx/sites-enabled/jenkins.conf"

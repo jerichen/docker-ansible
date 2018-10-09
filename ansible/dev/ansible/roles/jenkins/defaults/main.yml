@@ -18,6 +18,9 @@ nginx_ssl_certificate: /etc/nginx/ssl/nginx.crt
 # Server path to SSL certificate key
 nginx_ssl_certificate_key: /etc/nginx/ssl/nginx.key
 
+# Server path to SSL_dhparam certificate
+nginx_ssl_dhparam_certificate: /etc/nginx/cert/dhparam.pem
+
 jenkins_plugins:
   - ace-editor
   - antisamy-markup-formatter
