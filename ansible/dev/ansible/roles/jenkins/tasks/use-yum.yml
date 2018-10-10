@@ -26,12 +26,12 @@
     update_cache: yes
   when: jenkins_war.stat.exists == False
 
-- name: Change jenkins config
-  lineinfile:
-    path: '/etc/sysconfig/jenkins'
-    regexp: '^JENKINS_ARGS=""'
-    line: 'JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT --httpListenAddress=127.0.0.1"'
-    backup: yes
+#- name: Change jenkins config
+#  lineinfile:
+#    path: '/etc/sysconfig/jenkins'
+#    regexp: '^JENKINS_ARGS=""'
+#    line: 'JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT --httpListenAddress=127.0.0.1"'
+#    backup: yes
 
 - name: Install nginx
   yum:
@@ -46,6 +46,12 @@
     group: root
     mode:  0755
 
+- name: generate SSL_certificate
+  command:
+    openssl req -nodes -new -x509 -newkey rsa:2048 -keyout {{ nginx_ssl_certificate_key }} -out {{ nginx_ssl_certificate }} -subj "{{ nginx_ssl_certificate_subject }}" -days {{ nginx_ssl_certificate_days }}
+  args:
+    creates: "{{ nginx_ssl_certificate }}"
+
 - name: Create nginx cert directory
   file:
     path: /etc/nginx/cert
@@ -56,16 +62,9 @@
 
 - name: generate SSL_dhparam
   command:
-    openssl dhparam -dsaparam -out /etc/nginx/cert/dhparam.pem 4096
+    openssl dhparam -dsaparam -out /etc/nginx/cert/dhparam.pem 2048
   args:
-    creates: "{{ nginx_ssl_certificate }}"
-
-- name: generate SSL_certificate
-  command:
-    openssl req -nodes -new -x509 -newkey rsa:4096 -keyout {{ nginx_ssl_certificate_key }} -out {{ nginx_ssl_certificate }} -subj "{{ nginx_ssl_certificate_subject }}" -days {{ nginx_ssl_certificate_days }}
-  args:
-    creates: "{{ nginx_ssl_certificate }}"
-
+    creates: "{{ nginx_ssl_dhparam_certificate }}"
 
 - name: Create sites-enabled directory
   file:
@@ -75,6 +74,15 @@
     group: root
     mode:  0755
 
+- name: copy nginx.conf
+  template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/nginx.conf"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    backup: "yes"
+
 - name: copy jenkins.conf
   template:
     src: "jenkins.conf.j2"
@@ -83,6 +91,10 @@
     group: "root"
     mode: "0755"
     backup: "yes"
+
+# 如果不配置SELinux，透過nginx反向代理訪問，產生錯誤如 connect() to 127.0.0.1:8001 failed (13: Permission denied
+- name: generate SSL_certificate
+  command: setsebool -P httpd_can_network_connect 1
 
 - name: restarted nginx on centos7
   service:
@@ -96,10 +108,14 @@
     state: restarted
     enabled: yes
 
+- name: debug host ip
+  debug:
+    msg: "{{ansible_host}}"
+
 - name: Wait for Jenkins to restart
   wait_for:
-    host: localhost
-    port: 8080
+    host: "{{ansible_host}}"
+    port: "{{ansible_port}}"
     delay: 20
     timeout: 100
 

@@ -51,12 +51,12 @@
     update_cache: yes
   when: jenkins_war.stat.exists == False
 
-- name: Change jenkins config
-  lineinfile:
-    path: '/etc/default/jenkins'
-    regexp: '^JENKINS_ARGS="'
-    line: 'JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT --httpListenAddress=127.0.0.1"'
-    backup: yes
+#- name: Change jenkins config
+#  lineinfile:
+#    path: '/etc/default/jenkins'
+#    regexp: '^JENKINS_ARGS="'
+#    line: 'JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT --httpListenAddress=127.0.0.1"'
+#    backup: yes
 
 - name: Install nginx
   apt:
@@ -129,10 +129,14 @@
     state: restarted
     enabled: yes
 
+- name: debug host ip
+  debug:
+    msg: "{{ansible_host}}"
+
 - name: Wait for Jenkins to restart
   wait_for:
-    host: localhost
-    port: 8080
+    host: "{{ansible_host}}"
+    port: "{{ansible_port}}"
     delay: 20
     timeout: 30
 
