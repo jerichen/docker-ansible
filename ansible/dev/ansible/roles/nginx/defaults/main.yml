@@ -38,12 +38,12 @@ nginx_vhost:
     group: "root"
     mode: "0755"
     backup: "yes"
-  - src: 'templates/php5.6.conf.j2'
-    dest: "/etc/nginx/sites-enabled/local-php56.com.tw.conf"
-    owner: "root"
-    group: "root"
-    mode: "0755"
-    backup: "yes"
+#  - src: 'templates/php5.6.conf.j2'
+#    dest: "/etc/nginx/sites-enabled/local-php56.com.tw.conf"
+#    owner: "root"
+#    group: "root"
+#    mode: "0755"
+#    backup: "yes"
 
 # index.php
 index_php:
@@ -65,3 +65,6 @@ nginx_ssl_certificate: /etc/nginx/ssl/nginx.crt
 
 # Server path to SSL certificate key
 nginx_ssl_certificate_key: /etc/nginx/ssl/nginx.key
+
+# Server path to SSL_dhparam certificate
+nginx_ssl_dhparam_certificate: /etc/nginx/cert/dhparam.pem

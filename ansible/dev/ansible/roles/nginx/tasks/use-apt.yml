@@ -43,6 +43,20 @@
   args:
     creates: "{{ nginx_ssl_certificate }}"
 
+- name: Create nginx cert directory
+  file:
+    path: /etc/nginx/cert
+    state: directory
+    owner: root
+    group: root
+    mode:  0755
+
+- name: generate SSL_dhparam
+  command:
+    openssl dhparam -dsaparam -out /etc/nginx/cert/dhparam.pem 2048
+  args:
+    creates: "{{ nginx_ssl_dhparam_certificate }}"
+
 - name: copy nginx vhost
   template:
     src: "{{ item.src }}"

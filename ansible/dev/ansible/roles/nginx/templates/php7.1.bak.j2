@@ -1,0 +1,56 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+{% if website is defined %}
+
+server {
+    # support http and ipv6
+    listen 80;
+    listen [::]:80;
+
+    server_name local-php71.com.tw;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    # support https and ipv6
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    server_name local-php71.com.tw;
+    root /var/www/html/default/public;
+    index index.php index.html index.htm;
+
+    charset utf-8;
+
+    ssl on;
+    ssl_certificate /etc/nginx/ssl/nginx.crt;
+    ssl_certificate_key /etc/nginx/ssl/nginx.key;
+    ssl_protocols         TLSv1 TLSv1.1 TLSv1.2;
+
+    location / {
+        try_files $uri $uri/ /index.php$is_args$args;
+    }
+
+    location ~ \.php$ {
+        try_files $uri /index.php =404;
+
+        {% if ansible_distribution == 'Ubuntu' %}
+        fastcgi_pass unix:/var/run/php/php7.1-fpm.sock;
+        {% endif %}
+
+        {% if ansible_distribution == 'CentOS' %}
+        fastcgi_pass 127.0.0.1:9000;
+        {% endif %}
+
+        fastcgi_index index.php;
+        fastcgi_buffers 16 16k;
+        fastcgi_buffer_size 32k;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+
+{% endif %}
