@@ -78,9 +78,9 @@ server {
         deny all;
     }
 
-#    if ( $http_host !~* ^(local-php71\.com\.tw)$ ) {
-#        return 444;
-#    }
+    if ( $http_host !~* ^(local-php71\.com\.tw)$ ) {
+        return 444;
+    }
 }
 
 {% endif %}

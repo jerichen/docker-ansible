@@ -82,3 +82,6 @@
     - "{{ index_php }}"
   when:
     index_php is defined
+
+#- name: add nginx user
+#  command: useradd nginx
