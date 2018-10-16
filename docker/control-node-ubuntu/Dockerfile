@@ -3,6 +3,9 @@ MAINTAINER JeriChen<jeri.chen0110@gmail.com>
 
 ENV TZ=Asia/Taipei
 
+# ADD .bashrc
+ADD ./files/bashrc.conf .bashrc
+
 # install ansible
 RUN apt-get update
 RUN apt-get install -y tzdata
