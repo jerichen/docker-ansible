@@ -37,7 +37,7 @@ services:
       container_name: web01
 
 ## centos Managed Container ##################################
-    
+
     centos:
 #      build:
 #        context: ./managed-node-centos
