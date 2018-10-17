@@ -1,12 +1,13 @@
 #jinja2: lstrip_blocks: "True", trim_blocks: "True"
-{% if ansible_distribution == 'Ubuntu' %}
-user www-data;
-{% endif %}
+#{% if ansible_distribution == 'Ubuntu' %}
+#user www-data;
+#{% endif %}
+#
+#{% if ansible_distribution == 'CentOS' %}
+#user nginx;
+#{% endif %}
 
-{% if ansible_distribution == 'CentOS' %}
 user nginx;
-{% endif %}
-
 worker_processes 4;
 pid /run/nginx.pid;
 error_log /var/log/nginx/error.log;

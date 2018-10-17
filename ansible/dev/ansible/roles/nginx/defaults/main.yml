@@ -38,12 +38,12 @@ nginx_vhost:
     group: "root"
     mode: "0755"
     backup: "yes"
-#  - src: 'templates/php5.6.conf.j2'
-#    dest: "/etc/nginx/sites-enabled/local-php56.com.tw.conf"
-#    owner: "root"
-#    group: "root"
-#    mode: "0755"
-#    backup: "yes"
+  - src: 'templates/php5.6.conf.j2'
+    dest: "/etc/nginx/sites-enabled/local-php56.com.tw.conf"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    backup: "yes"
 
 # index.php
 index_php:

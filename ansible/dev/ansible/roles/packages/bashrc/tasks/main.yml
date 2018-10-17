@@ -2,7 +2,7 @@
   set_fact:
     roles_name: "{{ role_path|basename }}"
 
-- name: Copy bashrc to master
+- name: Change bashrc to master
   template:
     src: "bashrc.j2"
     dest: ".bashrc"
@@ -11,7 +11,7 @@
     mode: "0755"
     backup: "yes"
 
-- name: Copy bashrc to root
+- name: Change bashrc to root
   template:
     src: "bashrc.j2"
     dest: "/root/.bashrc"

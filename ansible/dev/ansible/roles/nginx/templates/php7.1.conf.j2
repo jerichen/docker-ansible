@@ -2,8 +2,8 @@
 {% if website is defined %}
 
 upstream local-php71_com_tw {
-    server unix:/var/run/php/php7.1-fpm.sock;
-#    server unix:/var/run/local-php71_com_tw.sock;
+#    server unix:/var/run/php/php7.1-fpm.sock;
+    server unix:/var/run/php/local-php71.com.tw.sock
 }
 
 server {
@@ -78,9 +78,9 @@ server {
         deny all;
     }
 
-    if ( $http_host !~* ^(local-php71\.com\.tw)$ ) {
-        return 444;
-    }
+#    if ( $http_host !~* ^(local-php71\.com\.tw)$ ) {
+#        return 444;
+#    }
 }
 
 {% endif %}
