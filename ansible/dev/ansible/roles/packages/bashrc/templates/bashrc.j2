@@ -1,14 +1,14 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+
 # .bashrc
-
 # User specific aliases and functions
-
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
-        . /etc/bashrc
+. /etc/bashrc
 fi
 PATH=$PATH:/tools/web
 eval "$(register-python-argcomplete web_tools.py)"
@@ -29,8 +29,8 @@ BASH_MY_CYAN="\[\033[0;36m\]"
 BASH_MY_PURPLE="\[\033[0;35m\]"
 
 function parse_git_branch {
-    ref=$(git symbolic-ref HEAD 2> /dev/null) || return;
-    echo "("${ref#refs/heads/}") ";
+ref=$(git symbolic-ref HEAD 2> /dev/null) || return;
+echo "("${ref#refs/heads/}") ";
 }
 
 # online ls & grep color

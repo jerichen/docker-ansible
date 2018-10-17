@@ -3,9 +3,6 @@ MAINTAINER JeriChen<jeri.chen0110@gmail.com>
 
 ENV TZ=Asia/Taipei
 
-# ADD .bashrc
-ADD ./bashrc.conf .bashrc
-
 # Update the index of available packages.
 RUN yum update -y
 

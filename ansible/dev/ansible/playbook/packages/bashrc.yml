@@ -1,0 +1,7 @@
+- hosts: '{{ hosts_name }}'
+  user: master
+  become: True
+  become_user: root
+  become_method: sudo
+  roles:
+    - role: packages/bashrc
