@@ -70,7 +70,6 @@ server {
         access_log off;
         include       fastcgi_params;
         fastcgi_pass  local-php71_com_tw;
-#        fastcgi_pass  unix:/var/run/local-php71_com_tw.sock;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
 
