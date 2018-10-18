@@ -12,9 +12,6 @@
   notify:
     - restarted nginx
 
-- name: add nginx user
-  command: useradd nginx
-
 - name: delete conf
   file:
     path: "{{ item.path }}"

@@ -30,32 +30,43 @@
   when:
     apt_php_packages is defined
 
-#- name: Change www.conf
+- name: Change www.conf # /etc/php/7.1/fpm/pool.d/www.conf
+  template:
+    src: "php-fpm/www.conf.j2"
+    dest: "/etc/php/7.1/fpm/pool.d/www.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: "yes"
+  notify: restarted php7.1-fpm on ubuntu
+
+- name: Add local-php71.com.tw.conf # /etc/php/7.1/fpm/pool.d/local-php71.com.tw.conf
+  template:
+    src: "php-fpm/local-php71.com.tw.conf.j2"
+    dest: "/etc/php/7.1/fpm/pool.d/local-php71.com.tw.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: "yes"
+  notify: restarted php7.1-fpm on ubuntu
+
+#- name: Change www.conf # /etc/php/5.6/fpm/pool.d/www.conf
 #  template:
 #    src: "php-fpm/www.conf.j2"
 #    dest: "/etc/php/7.1/fpm/pool.d/www.conf"
 #    owner: "root"
 #    group: "root"
-#    mode: "0755"
+#    mode: "0644"
 #    backup: "yes"
 #
-#- name: Add local-php71.com.tw.conf
-#  template:
-#    src: "php-fpm/local-php71.com.tw.conf.j2"
-#    dest: "/etc/php/7.1/fpm/pool.d/local-php71.com.tw.conf"
-#    owner: "root"
-#    group: "root"
-#    mode: "0755"
-#    backup: "yes"
-#
-#- name: Add local-php56.com.tw.conf
+#- name: Add local-php56.com.tw.conf # /etc/php/7.1/fpm/pool.d/local-php56.com.tw.conf
 #  template:
 #    src: "php-fpm/local-php56.com.tw.conf.j2"
 #    dest: "/etc/php/7.1/fpm/pool.d/local-php56.com.tw.conf"
 #    owner: "root"
 #    group: "root"
-#    mode: "0755"
+#    mode: "0644"
 #    backup: "yes"
-
-- name: Force start of php7.1-fpm service.
-  command: service php7.1-fpm start
+#
+#- name: Force start of php7.1-fpm service.
+#  command: service php7.1-fpm start
