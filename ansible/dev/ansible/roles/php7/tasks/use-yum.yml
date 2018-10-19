@@ -31,3 +31,31 @@
   when:
     yum_php_packages is defined
   notify: restarted php7.1-fpm on centos
+
+- name: Create php for save php-fpm.sock
+  file:
+    path: /var/run/php
+    state: directory
+    owner: root
+    group: root
+    mode:  0755
+
+- name: Change www.conf # /etc/php-fpm.d/www.conf
+  template:
+    src: "php-fpm/www.conf.j2"
+    dest: "/etc/php-fpm.d/www.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: "yes"
+  notify: restarted php7.1-fpm on centos
+
+- name: Add local-php71.com.tw.conf # /etc/php-fpm.d/local-php71.com.tw.conf
+  template:
+    src: "php-fpm/local-php71.com.tw.conf.j2"
+    dest: "/etc/php-fpm.d/local-php71.com.tw.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: "yes"
+  notify: restarted php7.1-fpm on centos

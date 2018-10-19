@@ -1,3 +1,8 @@
+- name: Create a nginx user
+  user:
+    name: nginx
+    password: secret
+
 - name: Install requires package for yum module
   yum:
     name: "{{ item }}"
@@ -50,6 +55,20 @@
     openssl req -nodes -new -x509 -keyout {{ nginx_ssl_certificate_key }} -out {{ nginx_ssl_certificate }} -subj "{{ nginx_ssl_certificate_subject }}" -days {{ nginx_ssl_certificate_days }}
   args:
     creates: "{{ nginx_ssl_certificate }}"
+
+- name: Create nginx cert directory
+  file:
+    path: /etc/nginx/cert
+    state: directory
+    owner: root
+    group: root
+    mode:  0755
+
+- name: generate SSL_dhparam
+  command:
+    openssl dhparam -dsaparam -out /etc/nginx/cert/dhparam.pem 2048
+  args:
+    creates: "{{ nginx_ssl_dhparam_certificate }}"
 
 - name: copy nginx vhost
   template:
