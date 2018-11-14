@@ -12,3 +12,5 @@ website: "local-example.com.tw"
 php_71_fpm: "php7.1-fpm"
 apt_php_version: "php7.1"
 yum_php_version: "php"
+
+variable_host: "local"
