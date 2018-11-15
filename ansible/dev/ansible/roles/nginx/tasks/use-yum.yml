@@ -5,10 +5,9 @@
 
 - name: Install requires package for yum module
   yum:
-    name: "{{ item }}"
+    name:
+      - epel-release
     state: latest
-  with_items:
-    - epel-release
 
 - name: Install web server
   yum:

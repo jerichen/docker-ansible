@@ -1,0 +1,60 @@
+- name: Install requires package for yum module
+  yum:
+    name:
+      - libselinux-python
+      - epel-release
+    state: latest
+
+- name: Install remi repo
+  yum:
+    name: http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+    state: present
+  when:
+    ansible_distribution == 'CentOS' and
+    ansible_distribution_major_version == '7'
+
+- name: Install yum-utils packages
+  yum:
+    name: yum-utils
+    state: present
+
+- name: enable remi php71 repo
+  shell: yum-config-manager --enable remi-php71
+
+- name: Install php packages
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_nested:
+    "{{ yum_php_packages }}"
+  when:
+    yum_php_packages is defined
+  notify: restarted php7.1-fpm on centos
+
+- name: Create php for save php-fpm.sock
+  file:
+    path: /var/run/php
+    state: directory
+    owner: root
+    group: root
+    mode:  0755
+
+- name: Change www.conf # /etc/php-fpm.d/www.conf
+  template:
+    src: "php-fpm/www.conf.j2"
+    dest: "/etc/php-fpm.d/www.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: "yes"
+  notify: restarted php7.1-fpm on centos
+
+- name: Add local-php71.com.tw.conf # /etc/php-fpm.d/local-php71.com.tw.conf
+  template:
+    src: "php-fpm/local-php71.com.tw.conf.j2"
+    dest: "/etc/php-fpm.d/local-php71.com.tw.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: "yes"
+  notify: restarted php7.1-fpm on centos

@@ -1,6 +1,6 @@
 - name: Test connectivity
-    ping:
-    register: result
+  ping:
+  register: result
 
 - name: Print result
   debug:
