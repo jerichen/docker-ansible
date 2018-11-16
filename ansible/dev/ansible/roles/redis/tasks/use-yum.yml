@@ -2,9 +2,9 @@
   yum:
     name: "{{ item }}"
     state: latest
-  with_items:
-  - libselinux-python
-  - epel-release
+  loop:
+    - libselinux-python
+    - epel-release
 
 - name: Install remi repo
   yum:

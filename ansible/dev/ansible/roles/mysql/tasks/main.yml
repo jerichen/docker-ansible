@@ -1,3 +1,11 @@
+- name: Test connectivity
+  ping:
+  register: result
+
+- name: Print result
+  debug:
+    msg: "{{ result }}"
+
 - name: set variables
   set_fact:
     roles_name: "{{ role_path|basename }}"

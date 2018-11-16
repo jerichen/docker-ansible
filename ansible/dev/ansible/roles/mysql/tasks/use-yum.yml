@@ -11,11 +11,12 @@
 
 - name: Install MySQL server yum packages
   yum:
-    name: "{{ item }}"
+    name: "{{ packages }}"
     state: present
     update_cache: yes
-  with_items:
-    "{{ mysql_packages }}"
+  vars:
+    packages:
+      "{{ mysql_packages }}"
   when:
     mysql_packages is defined
 
@@ -66,28 +67,30 @@
 - name: update mysql root password for all root accounts
   mysql_user:
     name: root
-    host: "{{ item }}"
+    host: "{{ packages }}"
     password: "{{ mysql_root_password }}"
     login_user: '{{ mysql_root_name }}'
     login_password: '{{ mysql_root_password }}'
-  with_items:
-    - "{{ ansible_hostname }}"
-    - 127.0.0.1
-    - ::1
-    - localhost
+  vars:
+    packages:
+      - "{{ ansible_hostname }}"
+      - 127.0.0.1
+      - ::1
+      - localhost
   when: ansible_hostname != 'localhost'
 
 - name: update mysql root password for all root accounts
   mysql_user:
     name: root
-    host: "{{ item }}"
+    host: "{{ packages }}"
     password: "{{ mysql_root_password }}"
     login_user: '{{ mysql_root_name }}'
     login_password: '{{ mysql_root_password }}'
-  with_items:
-    - 127.0.0.1
-    - ::1
-    - localhost
+  vars:
+    packages:
+      - 127.0.0.1
+      - ::1
+      - localhost
   when: ansible_hostname == 'localhost'
 
 - name: copy .my.cnf file with root password credentials
@@ -105,8 +108,8 @@
     dest: "{{ item.home }}/.my.cnf"
     owner: "{{ item.name }}"
     mode: 0600
-  with_items:
-    - "{{ mysql_users }}"
+  loop:
+    "{{ mysql_users }}"
   notify:
     - restarted MySQL on centos
 
@@ -119,8 +122,8 @@
   mysql_db:
     name: "{{ item.name }}"
     state: present
-  with_items:
-    - "{{ mysql_database }}"
+  loop:
+    "{{ mysql_database }}"
   when:
     mysql_database|lower() != 'none'
 
@@ -131,8 +134,8 @@
     priv: "{{ item.priv|default('*.*:ALL,GRANT') }}"
     state: present
     host: "{{ item.host|default('localhost') }}"
-  with_items:
-    - "{{ mysql_users }}"
+  loop:
+    "{{ mysql_users }}"
   when:
     mysql_users|lower() != 'none'
   notify:
@@ -145,8 +148,8 @@
     priv: "{{ item.priv|default('*.*:REPLICATION SLAVE') }}"
     state: present
     host: "{{ item.host|default('localhost') }}"
-  with_items:
-    - "{{ mysql_repl_users }}"
+  loop:
+    "{{ mysql_repl_users }}"
   when:
     mysql_repl_role == 'master'
   notify:
