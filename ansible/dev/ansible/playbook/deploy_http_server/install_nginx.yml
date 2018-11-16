@@ -4,4 +4,4 @@
   become_user: root
   become_method: sudo
   roles:
-    - role: nginx
+    - role: deploy_http_server/nginx

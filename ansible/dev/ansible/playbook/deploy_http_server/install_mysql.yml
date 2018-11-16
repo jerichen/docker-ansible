@@ -4,4 +4,4 @@
   become_user: root
   become_method: sudo
   roles:
-    - role: mysql
+    - role: deploy_http_server/mysql

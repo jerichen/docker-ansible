@@ -4,4 +4,4 @@
   become_user: root
   become_method: sudo
   roles:
-    - role: redis
+    - role: deploy_package/redis

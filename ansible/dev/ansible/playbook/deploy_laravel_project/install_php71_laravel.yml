@@ -5,4 +5,4 @@
   become_user: root
   become_method: sudo
   roles:
-    - role: deploy_project
+    - role: deploy_laravel_project/php71_laravel
