@@ -4,7 +4,6 @@
     name: mysql
     state: restarted
     enabled: yes
-    sleep: 5
 
 - name: reloaded MySQL
   service:

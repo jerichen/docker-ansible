@@ -2,7 +2,7 @@
   include_vars: "{{ ansible_distribution }}.yml"
 
 - name: Install MySQL server apt packages
-  yum:
+  apt:
     name: "{{ packages }}"
     state: present
   vars:
