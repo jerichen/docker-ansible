@@ -70,8 +70,8 @@
     group: "{{ item.group }}"
     mode: "{{ item.mode }}"
     backup: "{{ item.backup }}"
-  with_items:
-    - "{{ nginx_vhost }}"
+  loop:
+    "{{ nginx_vhost }}"
   when:
     nginx_vhost is defined
 
@@ -83,7 +83,7 @@
     group: "{{ item.group }}"
     mode: "{{ item.mode }}"
     backup: "{{ item.backup }}"
-  with_items:
-    - "{{ index_php }}"
+  loop:
+    "{{ index_php }}"
   when:
     index_php is defined

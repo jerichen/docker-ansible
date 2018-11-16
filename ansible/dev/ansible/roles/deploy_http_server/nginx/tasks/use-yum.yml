@@ -23,8 +23,8 @@
   file:
     path: "{{ item.path }}"
     state: absent
-  with_items:
-  - "{{ delete_conf }}"
+  loop:
+    "{{ delete_conf }}"
   when:
     delete_conf is defined
 
@@ -44,7 +44,7 @@
     group: "{{ item.group }}"
     mode:  "{{ item.mode }}"
     state:  "{{ item.state }}"
-  with_items:
+  loop:
     "{{ folder_directory }}"
   when:
     folder_directory is defined
@@ -77,8 +77,8 @@
     group: "{{ item.group }}"
     mode: "{{ item.mode }}"
     backup: "{{ item.backup }}"
-  with_items:
-    - "{{ nginx_vhost }}"
+  loop:
+    "{{ nginx_vhost }}"
   when:
     nginx_vhost is defined
 
@@ -90,7 +90,7 @@
     group: "{{ item.group }}"
     mode: "{{ item.mode }}"
     backup: "{{ item.backup }}"
-  with_items:
-    - "{{ index_php }}"
+  loop:
+    "{{ index_php }}"
   when:
     index_php is defined

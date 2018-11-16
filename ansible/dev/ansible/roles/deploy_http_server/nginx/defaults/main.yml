@@ -5,7 +5,7 @@ delete_conf:
 
 # copy_conf
 copy_conf:
-  - src: "~/dev/ansible/roles/nginx/files/nginx.conf"
+  - src: "{{ role_path }}/files/nginx.conf"
     dest: "/etc/nginx/nginx.conf"
     owner: "root"
     group: "root"
@@ -47,7 +47,7 @@ nginx_vhost:
 
 # index.php
 index_php:
-  - src: "~/dev/ansible/roles/nginx/files/index.php"
+  - src: "{{ role_path }}/files/index.php"
     dest: "/var/www/html/default/public/index.php"
     owner: "root"
     group: "root"
