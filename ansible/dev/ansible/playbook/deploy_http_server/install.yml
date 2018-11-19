@@ -1,0 +1,4 @@
+# Linux + Nginx + PHP7.1 + MySQL
+- import_playbook: install_nginx.yml
+- import_playbook: install_php71.yml
+- import_playbook: install_mysql.yml
