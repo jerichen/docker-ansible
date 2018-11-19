@@ -30,6 +30,6 @@ touch ~/dev/ansible/roles/example/{defaults,vars,tasks,meta,handlers}/main.yml
 ansible-playbook ~/dev/ansible/playbook/example/playbook.yml
 
 ### run ansible add var 
-ansible-playbook --extra-vars "hosts_name=dev" playbook/example/playbook.yml
-ansible-playbook --extra-vars "hosts_name=dev website=blog" playbook/example/playbook.yml
-ansible-playbook --e "hosts_name=dev website=blog" playbook/example/playbook.yml
+ansible-playbook --extra-vars "variable_host=local" playbook/example/playbook.yml
+ansible-playbook --extra-vars "variable_host=local website=blog" playbook/example/playbook.yml
+ansible-playbook --e "variable_host=local website=blog" playbook/example/playbook.yml

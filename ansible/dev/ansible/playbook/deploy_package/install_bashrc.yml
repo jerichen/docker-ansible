@@ -4,4 +4,4 @@
   become_user: root
   become_method: sudo
   roles:
-    - role: packages/bashrc
+    - role: deploy_package/bashrc
