@@ -6,7 +6,7 @@ services:
 
     control:
       image:
-          jerichen/control-node-ubuntu:latest
+          jerichen/control-node-ubuntu:18.04
       volumes:
           - ${CONTROL_NODE_UBUNTU_LOG_PATH}:/var/log
           - ${CONTROL_DEV_PATH}:/root/dev
@@ -20,7 +20,7 @@ services:
 #      build:
 #        context: ./managed-node-ubuntu
       image:
-          jerichen/managed-node-ubuntu:latest
+          jerichen/managed-node-ubuntu:18.04
       volumes:
           - ${MANAGED_NODE_UBUNTU_LOG_PATH}:/var/log
           - ${MANAGED_NODE_UBUNTU_NGINX_HTML_PATH}:/var/www/html
@@ -42,7 +42,7 @@ services:
 #      build:
 #        context: ./managed-node-centos
       image:
-          jerichen/managed-node-centos:latest
+          jerichen/managed-node-centos:7
       volumes:
           - ${MANAGED_NODE_CENTOS_LOG_PATH}:/var/log
           - ${MANAGED_NODE_CENTOS_NGINX_HTML_PATH}:/var/www/html
