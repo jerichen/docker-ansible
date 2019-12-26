@@ -1,4 +1,4 @@
-ubuntu_java_ppa_repo: "ppa:webupd8team/java"
+ubuntu_java_ppa_repo: 'ppa:linuxuprising/java'
 
 system_path: "/opt"
 elasticsearch_version: "6.4.1"
@@ -6,11 +6,19 @@ elasticsearch_download_source: "https://artifacts.elastic.co/downloads/elasticse
 elasticsearch_download_destination: "{{ system_path }}/elasticsearch-{{ elasticsearch_version }}.tar.gz"
 
 apt_java_packages:
-  - "oracle-java13-installer"
-  - "oracle-java13-set-default"
-  - "ca-certificates"
+  - 'oracle-java13-installer'
+  - 'oracle-java13-set-default'
 
 es_major_version: "6.x"
+
+# ubuntu
+oracle_java_apt_repository: 'ppa:linuxuprising/java'
+oracle_java_cache_valid_time: 3600
+oracle_java_deb_package: 'oracle-java13-installer'
+oracle_java_debconf_package_default: 'oracle-java13-set-default'
+oracle_java_home: "/usr/lib/jvm/java-13-oracle"
+oracle_java_license_version: 'shared/accepted-oracle-license-v1-2'
+oracle_java_state: latest
 
 
 
