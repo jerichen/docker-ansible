@@ -27,8 +27,6 @@
     cache_valid_time: "{{ oracle_java_cache_valid_time }}"
     update_cache: yes
     autoclean: yes
-  when:
-    apt_java_packages is defined
 
 - name: Add Elasticsearch apt key
   apt_key:
