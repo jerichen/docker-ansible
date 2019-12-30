@@ -11,7 +11,7 @@
 - name: Add Elasticsearch repository
   template:
     src: elasticsearch.repo
-    dest: /etc/yum.repos.d/elasticsearch-6.x.repo
+    dest: /etc/yum.repos.d/elasticsearch-7.x.repo
 
 - name: Install Elasticsearch
   yum:
