@@ -1,15 +1,7 @@
-ubuntu_java_ppa_repo: "ppa:webupd8team/java"
-
 system_path: "/opt"
 kibana_version: "6.4.1"
 kibana_download_source: "https://artifacts.elastic.co/downloads/kibana/kibana-{{ kibana_version }}.tar.gz"
 kibana_download_destination: "{{ system_path }}/kibana-{{ kibana_version }}.tar.gz"
-
-apt_java_packages:
-  - 'oracle-java13-installer'
-  - 'oracle-java13-set-default'
-
-es_major_version: "6.x"
 
 kibana_website: "elk-stack.com.tw"
 

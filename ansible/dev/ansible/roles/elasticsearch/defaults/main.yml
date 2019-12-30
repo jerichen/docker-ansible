@@ -1,5 +1,3 @@
-ubuntu_java_ppa_repo: 'ppa:linuxuprising/java'
-
 system_path: "/opt"
 elasticsearch_version: "6.4.1"
 elasticsearch_download_source: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{{ elasticsearch_version }}.tar.gz"
@@ -8,8 +6,6 @@ elasticsearch_download_destination: "{{ system_path }}/elasticsearch-{{ elastics
 apt_java_packages:
   - 'oracle-java13-installer'
   - 'oracle-java13-set-default'
-
-es_major_version: "6.x"
 
 # ubuntu
 oracle_java_apt_repository: 'ppa:linuxuprising/java'

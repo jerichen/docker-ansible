@@ -20,12 +20,13 @@
 
 - name: Install Java 13 packages
   apt:
-    name: "{{ item }}"
+    name:
+      - oracle-java13-installer
+      - oracle-java13-set-default
     state: latest
     cache_valid_time: "{{ oracle_java_cache_valid_time }}"
     update_cache: yes
-  with_items:
-    "{{ apt_java_packages }}"
+    autoclean: yes
   when:
     apt_java_packages is defined
 
