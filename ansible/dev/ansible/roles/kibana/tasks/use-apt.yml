@@ -5,25 +5,26 @@
 
 - name: Add repository for Ubuntu
   apt_repository:
-    repo: "{{ ubuntu_java_ppa_repo }}"
+    repo: "{{ oracle_java_apt_repository }}"
+    update_cache: yes
+    state: present
   when:
     ansible_distribution|lower == "ubuntu"
 
-- name: Update and upgrade apt packages
-  apt:
-    force_apt_get: yes
-    upgrade: yes
-    update_cache: yes
-    cache_valid_time: 86400
+- name: debian | set license as accepted
+  debconf:
+    name: "{{ oracle_java_deb_package }}"
+    question: "{{ oracle_java_license_version }}"
+    value: 'true'
+    vtype: 'select'
 
-- name: auto accept oracle jdk license
-  shell: echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-
-- name: Install Java8 packages
+- name: Install Java 13 packages
   apt:
     name: "{{ item }}"
     state: latest
-  with_nested:
+    cache_valid_time: "{{ oracle_java_cache_valid_time }}"
+    update_cache: yes
+  with_items:
     "{{ apt_java_packages }}"
   when:
     apt_java_packages is defined
@@ -35,7 +36,7 @@
 
 - name: Add Elasticsearch repository
   apt_repository:
-    repo: 'deb https://artifacts.elastic.co/packages/6.x/apt stable main'
+    repo: 'deb https://artifacts.elastic.co/packages/7.x/apt stable main'
     state: present
 
 - name: Install Kibana
