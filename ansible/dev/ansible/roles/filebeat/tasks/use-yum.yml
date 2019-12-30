@@ -11,11 +11,18 @@
 - name: Add Elasticsearch repository
   template:
     src: elasticsearch.repo
-    dest: /etc/yum.repos.d/elasticsearch-6.x.repo
+    dest: /etc/yum.repos.d/elasticsearch-7.x.repo
 
-- name: Install Logstash
+- name: Install Filebeat
   yum:
-    name: logstash
+    name: filebeat
     state: present
+
+- name: Change elasticsearch.yml
+  template:
+    src: "filebeat.yml.j2"
+    dest: "/etc/filebeat/filebeat.yml"
+    owner: root
+    mode: 0660
   notify:
-    - restarted logstash on centos
+    - restarted filebeat on centos
