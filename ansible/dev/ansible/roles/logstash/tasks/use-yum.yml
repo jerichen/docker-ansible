@@ -1,6 +1,6 @@
-- name: Install Java8 packages
+- name: Install Java11 packages
   yum:
-    name: java-1.8.0-openjdk.x86_64
+    name: java-11-openjdk
     state: present
 
 - name: Add Elasticsearch apt key
