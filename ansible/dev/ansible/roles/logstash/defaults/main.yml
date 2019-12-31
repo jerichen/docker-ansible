@@ -1,13 +1,14 @@
-ubuntu_java_ppa_repo: "ppa:webupd8team/java"
-
 system_path: "/opt"
 kibana_version: "6.4.1"
 kibana_download_source: "https://artifacts.elastic.co/downloads/kibana/kibana-{{ kibana_version }}.tar.gz"
 kibana_download_destination: "{{ system_path }}/kibana-{{ kibana_version }}.tar.gz"
 
-apt_java_packages:
-  - "oracle-java8-installer"
-  - "ca-certificates"
-
-es_major_version: "6.x"
+# ubuntu
+oracle_java_apt_repository: 'ppa:linuxuprising/java'
+oracle_java_cache_valid_time: 3600
+oracle_java_deb_package: 'oracle-java13-installer'
+oracle_java_debconf_package_default: 'oracle-java13-set-default'
+oracle_java_home: "/usr/lib/jvm/java-13-oracle"
+oracle_java_license_version: 'shared/accepted-oracle-license-v1-2'
+oracle_java_state: latest
 
