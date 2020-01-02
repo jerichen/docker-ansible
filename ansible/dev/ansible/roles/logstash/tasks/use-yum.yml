@@ -32,6 +32,13 @@
     owner: root
     mode: 0644
 
+- name: Add nginx-logstash.conf
+  template:
+    src: "nginx-logstash.conf.j2"
+    dest: "/etc/logstash/conf.d/nginx-logstash.conf"
+    owner: root
+    mode: 0644
+
 - name: trigger logstash restart on CentOS
   debug:
     msg: "trigger logstash restart on CentOS"
