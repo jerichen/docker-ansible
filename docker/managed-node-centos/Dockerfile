@@ -3,22 +3,20 @@ MAINTAINER JeriChen<jeri.chen0110@gmail.com>
 
 ENV TZ=Asia/Taipei
 
-# Update the index of available packages.
-RUN yum update -y
-
 # Install the requires package.
-RUN yum install -y vim
-RUN yum install -y net-tools
-RUN yum install -y openssh-server
-RUN yum install -y openssh-clients
-RUN yum install -y python
-RUN yum install -y sudo
-RUN yum install -y curl
-RUN yum install -y wget
-RUN yum install -y epel-release
-RUN yum install -y bash-completion
-RUN yum install -y openssl
-RUN yum clean all
+RUN yum update -y && \
+    yum install -y vim && \
+    yum install -y net-tools && \
+    yum install -y openssh-server && \
+    yum install -y openssh-clients && \
+    yum install -y python && \
+    yum install -y sudo && \
+    yum install -y curl && \
+    yum install -y wget && \
+    yum install -y epel-release && \
+    yum install -y bash-completion && \
+    yum install -y openssl && \
+    yum clean all
 
 # Setting timezone
 RUN cp /usr/share/zoneinfo/Asia/Taipei /etc/localtime;
