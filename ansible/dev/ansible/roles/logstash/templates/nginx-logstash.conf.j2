@@ -1,0 +1,25 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+input {
+    file {
+        path => '/var/log/nginx/*.log'
+        start_position => 'beginning'
+        ignore_older => 0
+    }
+}
+filter {
+    grok {
+        match => { "message" => "%{IPORHOST:http_host} %{IPORHOST:clientip} - %{USERNAME:remote_user} \[%{HTTPDATE:timestamp}\] \"(?:%{WORD:http_verb} %{NOTSPACE:http_request}(?: HTTP/%{NUMBER:http_version})?|%{DATA:raw_http_request})\" %{NUMBER:response} (?:%{NUMBER:bytes_read}|-) %{QS:referrer} %{QS:agent} %{QS:xforwardedfor} %{NUMBER:request_time:float}"}
+    }
+    geoip {
+        source => "clientip"
+    }
+}
+output {
+    elasticsearch {
+        hosts => ["http://localhost:9200"]
+        index => "nginx-%{+YYYY-MM-dd}"
+    }
+    stdout {
+        codec => rubydebug
+    }
+}
