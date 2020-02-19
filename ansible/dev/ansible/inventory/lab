@@ -2,8 +2,5 @@
 dev01  ansible_ssh_host=18.217.119.175 ansible_ssh_port=22 ansible_user=ec2-user ansible_ssh_common_args="-o ForwardAgent=yes"
 
 [local]
-web01  ansible_ssh_host=192.168.1.111 ansible_ssh_port=3332 ansible_user=master ansible_ssh_common_args="-o ForwardAgent=yes"
-web02  ansible_ssh_host=192.168.1.111  ansible_ssh_port=3333 ansible_user=master ansible_ssh_common_args="-o ForwardAgent=yes"
-
-[docker]
-docker01  ansible_ssh_host=192.168.1.113  ansible_ssh_port=2222 ansible_user=root ansible_ssh_common_args="-o ForwardAgent=yes"
+web01  ansible_ssh_host=192.168.1.106  ansible_ssh_port=22 ansible_user=master ansible_ssh_common_args="-o ForwardAgent=yes"
+web02  ansible_ssh_host=192.168.1.106  ansible_ssh_port=3333 ansible_user=master ansible_ssh_common_args="-o ForwardAgent=yes"
