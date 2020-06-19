@@ -2,59 +2,42 @@ version: '3'
 
 services:
 
-### ubuntu Control Container ##################################
-
     control:
-      image:
-          jerichen/control-node-ubuntu:18.04
+      image: jerichen/control-node-ubuntu:18.04
       volumes:
-          - ${CONTROL_NODE_UBUNTU_LOG_PATH}:/var/log
-          - ${CONTROL_DEV_PATH}:/root/dev
+        - ${CONTROL_NODE_UBUNTU_LOG_PATH}:/var/log
+        - ${CONTROL_DEV_PATH}:/root/dev
       ports:
-          - "${CONTROL_NODE_UBUNTU_SSH_PORT}:22"
+        - "${CONTROL_NODE_UBUNTU_SSH_PORT}:22"
       container_name: client
 
-### ubuntu Managed Container ##################################
-
     ubuntu:
-#      build:
-#        context: ./managed-node-ubuntu
-      image:
-          jerichen/managed-node-ubuntu:18.04
+      image: jerichen/managed-node-ubuntu:18.04
       volumes:
-          - ${MANAGED_NODE_UBUNTU_LOG_PATH}:/var/log
-          - ${MANAGED_NODE_UBUNTU_NGINX_HTML_PATH}:/var/www/html
-          - ${MANAGED_NODE_UBUNTU_NGINX_CONF_PATH}:/etc/nginx/sites-enabled
+        - ~/drupal/mount/var/log/nginx:/var/log/nginx
+        - ~/drupal/mount/var/www:/var/www/html
+        - ~/drupal/mount/etc/nginx/site-enabled:/etc/nginx/site-enabled
+        - ~/drupal/mount/etc/nginx/ssl:/etc/nginx/ssl
       ports:
-          - "${MANAGED_NODE_UBUNTU_SSH_PORT}:22"
-          - "${MANAGED_NODE_UBUNTU_HTTP_PORT}:80"
-          - "${MANAGED_NODE_UBUNTU_HTTPS_PORT}:443"
-          - "${MANAGED_NODE_UBUNTU_MYSQL_PORT}:3306"
-          - "${MANAGED_NODE_UBUNTU_REDIS_PORT}:6379"
-          - "${MANAGED_NODE_UBUNTU_ELASTICSEARCH_PORT}:9200"
-          - "${MANAGED_NODE_UBUNTU_KIBANA_PORT}:5601"
-          - "${MANAGED_NODE_UBUNTU_JENKINS_HTTP_PORT}:9080"
+        - "${MANAGED_NODE_UBUNTU_SSH_PORT}:22"
+        - "${MANAGED_NODE_UBUNTU_HTTP_PORT}:80"
+        - "${MANAGED_NODE_UBUNTU_HTTPS_PORT}:443"
+      depends_on:
+        - mysql
       container_name: web01
 
-## centos Managed Container ##################################
-
-    centos:
-#      build:
-#        context: ./managed-node-centos
-      image:
-          jerichen/managed-node-centos:7
+  ## mysql Managed Container ##################################
+    mysql:
+      image: mysql:5.7
+      command: --max_allowed_packet=256M
+      restart: always
+      environment:
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       volumes:
-          - ${MANAGED_NODE_CENTOS_LOG_PATH}:/var/log
-          - ${MANAGED_NODE_CENTOS_NGINX_HTML_PATH}:/var/www/html
-          - ${MANAGED_NODE_CENTOS_NGINX_CONF_PATH}:/etc/nginx/sites-enabled
+        - ~/drupal/mount/var/lib/mysql:/var/lib/mysql
       ports:
-          - "${MANAGED_NODE_CENTOS_SSH_PORT}:22"
-          - "${MANAGED_NODE_CENTOS_HTTP_PORT}:80"
-          - "${MANAGED_NODE_CENTOS_HTTPS_PORT}:443"
-          - "${MANAGED_NODE_CENTOS_MYSQL_PORT}:3306"
-          - "${MANAGED_NODE_CENTOS_REDIS_PORT}:6379"
-          - "${MANAGED_NODE_CENTOS_ELASTICSEARCH_PORT}:9200"
-          - "${MANAGED_NODE_CENTOS_KIBANA_PORT}:5601"
-          - "${MANAGED_NODE_CENTOS_JENKINS_HTTP_PORT}:9080"
-      container_name: web02
-      privileged: true  # 如果要存取 container 中的系統資料夾，需要加這個參數提升權限。
+        - "${MYSQL_PORT}:3306"
+      container_name: mysql
