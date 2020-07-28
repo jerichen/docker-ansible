@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+
+    control:
+      image: jerichen/control-node-ubuntu:18.04
+      volumes:
+          - ${CONTROL_NODE_UBUNTU_LOG_PATH}:/var/log
+          - ${CONTROL_DEV_PATH}:/root/dev
+      ports:
+          - "${CONTROL_NODE_UBUNTU_SSH_PORT}:22"
+      container_name: client
+
+    ubuntu:
+      image: jerichen/managed-node-ubuntu:18.04
+      volumes:
+          - ${DRUPAL_LOG_PATH}:/var/log
+          - ${DRUPAL_NGINX_HTML_PATH}:/var/www/html
+          - ${DRUPAL_NGINX_CONF_PATH}:/etc/nginx/sites-enabled
+      ports:
+          - "${MANAGED_NODE_UBUNTU_SSH_PORT}:22"
+          - "${MANAGED_NODE_UBUNTU_HTTP_PORT}:80"
+          - "${MANAGED_NODE_UBUNTU_HTTPS_PORT}:443"
+      depends_on:
+        - mysql
+      container_name: web01
+
+  ## mysql Managed Container ##################################
+    mysql:
+      image: mysql:5.7
+      command: --max_allowed_packet=256M
+      restart: always
+      environment:
+          MYSQL_DATABASE: ${MYSQL_DATABASE}
+          MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+          MYSQL_USER: ${MYSQL_USER}
+          MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      volumes:
+          - ~/drupal/mount/var/lib/mysql:/var/lib/mysql
+      ports:
+          - "${MYSQL_PORT}:3306"
+      container_name: mysql
