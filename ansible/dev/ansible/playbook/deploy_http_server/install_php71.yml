@@ -1,4 +1,4 @@
-- hosts: "{{ variable_host | default('cw') }}"
+- hosts: "{{ variable_host | default('local') }}"
   user: master
   become: True
   become_user: root

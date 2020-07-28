@@ -4,4 +4,4 @@
   become_user: root
   become_method: sudo
   roles:
-    - role: deploy_http_server/php72
+    - role: deploy_http_server/php74

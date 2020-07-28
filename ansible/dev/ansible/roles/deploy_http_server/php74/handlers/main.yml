@@ -1,0 +1,25 @@
+# ubuntu
+- name: restarted php7.4-fpm on ubuntu
+  service:
+    name: php7.4-fpm
+    state: restarted
+    enabled: yes
+
+- name: reloaded php7.4-fpm
+  service:
+    name: php7.4-fpm
+    state: reloaded
+    enabled: yes
+
+- name: started php7.4-fpm
+  service:
+    name: php7.4-fpm
+    state: started
+    enabled: yes
+
+# centos
+- name: restarted php7.4-fpm on centos
+  service:
+    name: php-fpm.service
+    state: restarted
+    enabled: yes
