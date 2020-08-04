@@ -3,7 +3,7 @@ version: '3'
 services:
 
     control:
-      image: jerichen/control-node-ubuntu:18.04
+      image: jerichen/control-node-ubuntu:latest
       volumes:
           - ${CONTROL_NODE_UBUNTU_LOG_PATH}:/var/log
           - ${CONTROL_DEV_PATH}:/root/dev
@@ -12,7 +12,7 @@ services:
       container_name: client
 
     ubuntu:
-      image: jerichen/managed-node-ubuntu:18.04
+      image: jerichen/managed-node-ubuntu:latest
       volumes:
           - ${DRUPAL_LOG_PATH}:/var/log
           - ${DRUPAL_NGINX_HTML_PATH}:/var/www/html

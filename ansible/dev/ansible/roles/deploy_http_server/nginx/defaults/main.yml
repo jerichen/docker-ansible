@@ -32,6 +32,24 @@ folder_directory:
 
 # nginx_vhost
 nginx_vhost:
+  - src: 'templates/php7.4.conf.j2'
+    dest: "/etc/nginx/sites-enabled/local-php74.com.tw.conf"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    backup: "yes"
+  - src: 'templates/php7.3.conf.j2'
+    dest: "/etc/nginx/sites-enabled/local-php73.com.tw.conf"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    backup: "yes"
+  - src: 'templates/php7.2.conf.j2'
+    dest: "/etc/nginx/sites-enabled/local-php72.com.tw.conf"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    backup: "yes"
   - src: 'templates/php7.1.conf.j2'
     dest: "/etc/nginx/sites-enabled/local-php71.com.tw.conf"
     owner: "root"
